@@ -9,6 +9,40 @@ description: Lists the changes per LoRa Server release, including steps how to u
 ---
 # Changelog
 
+## v3.1.0
+
+### Features
+
+#### Prometheus metrics
+
+gRPC API metrics can now be exposed using a [Prometheus](https://prometheus.io/) metrics endpoint.
+In future releases, more metrics will be exposed using this endpoint.
+
+### Improvements
+
+#### Always forward uplink data (even on fPort = 0)
+
+Even when no application-payload is sent, this can still provide valuable
+information to the end-application (e.g. data-rate, RX attributes, the fact
+that the device is 'alive'). ([#408](https://github.com/brocaar/loraserver/issues/408))
+
+### Bugfixes
+
+* Revert LoRaWAN 1.1 Class-C device always joins as Class-A. ([#395](https://github.com/brocaar/loraserver/issues/395))
+* Fix TXParamSetupReq mac-command not being sent. ([#397](https://github.com/brocaar/loraserver/issues/397))
+* Fix ignoring packets received on multiple frequencies. ([#401](https://github.com/brocaar/loraserver/issues/401))
+
+## v3.0.2
+
+### Improvements
+
+* Make max idle / max active Redis connections configurable.
+
+### Bugfixes
+
+* Fix Azure IoT Hub detached link issue / recover on AMQP error.
+* Fix load device-session twice from database. [#406](https://github.com/brocaar/loraserver/pull/406).
+
 ## v3.0.1
 
 ### Bugfixes
@@ -51,6 +85,12 @@ and then upgrade LoRa Server to v3.
 It is also recommended to update your LoRa Server configuration file.
 See [Configuration](https://www.loraserver.io/loraserver/install/config/) for
 more information.
+
+## v2.8.2
+
+### Bugfixes
+
+* Fix ADR setup. [#396](https://github.com/brocaar/loraserver/pull/396)
 
 ## v2.8.1
 
