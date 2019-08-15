@@ -346,26 +346,28 @@ func (n *NetworkServerAPI) CreateDeviceProfile(ctx context.Context, req *ns.Crea
 	}
 
 	dp := storage.DeviceProfile{
-		ID:                 dpID,
-		SupportsClassB:     req.DeviceProfile.SupportsClassB,
-		ClassBTimeout:      int(req.DeviceProfile.ClassBTimeout),
-		PingSlotPeriod:     int(req.DeviceProfile.PingSlotPeriod),
-		PingSlotDR:         int(req.DeviceProfile.PingSlotDr),
-		PingSlotFreq:       int(req.DeviceProfile.PingSlotFreq),
-		SupportsClassC:     req.DeviceProfile.SupportsClassC,
-		ClassCTimeout:      int(req.DeviceProfile.ClassCTimeout),
-		MACVersion:         req.DeviceProfile.MacVersion,
-		RegParamsRevision:  req.DeviceProfile.RegParamsRevision,
-		RXDelay1:           int(req.DeviceProfile.RxDelay_1),
-		RXDROffset1:        int(req.DeviceProfile.RxDrOffset_1),
-		RXDataRate2:        int(req.DeviceProfile.RxDatarate_2),
-		RXFreq2:            int(req.DeviceProfile.RxFreq_2),
-		FactoryPresetFreqs: factoryPresetFreqs,
-		MaxEIRP:            int(req.DeviceProfile.MaxEirp),
-		MaxDutyCycle:       int(req.DeviceProfile.MaxDutyCycle),
-		SupportsJoin:       req.DeviceProfile.SupportsJoin,
-		Supports32bitFCnt:  req.DeviceProfile.Supports_32BitFCnt,
-		RFRegion:           band.Band().Name(),
+		ID:                  dpID,
+		SupportsClassB:      req.DeviceProfile.SupportsClassB,
+		ClassBTimeout:       int(req.DeviceProfile.ClassBTimeout),
+		PingSlotPeriod:      int(req.DeviceProfile.PingSlotPeriod),
+		PingSlotDR:          int(req.DeviceProfile.PingSlotDr),
+		PingSlotFreq:        int(req.DeviceProfile.PingSlotFreq),
+		SupportsClassC:      req.DeviceProfile.SupportsClassC,
+		ClassCTimeout:       int(req.DeviceProfile.ClassCTimeout),
+		MACVersion:          req.DeviceProfile.MacVersion,
+		RegParamsRevision:   req.DeviceProfile.RegParamsRevision,
+		RXDelay1:            int(req.DeviceProfile.RxDelay_1),
+		RXDROffset1:         int(req.DeviceProfile.RxDrOffset_1),
+		RXDataRate2:         int(req.DeviceProfile.RxDatarate_2),
+		RXFreq2:             int(req.DeviceProfile.RxFreq_2),
+		FactoryPresetFreqs:  factoryPresetFreqs,
+		MaxEIRP:             int(req.DeviceProfile.MaxEirp),
+		MaxDutyCycle:        int(req.DeviceProfile.MaxDutyCycle),
+		SupportsJoin:        req.DeviceProfile.SupportsJoin,
+		Supports32bitFCnt:   req.DeviceProfile.Supports_32BitFCnt,
+		RFRegion:            band.Band().Name(),
+		GeolocBufferTTL:     int(req.DeviceProfile.GeolocBufferTtl),
+		GeolocMinBufferSize: int(req.DeviceProfile.GeolocMinBufferSize),
 	}
 
 	if err := storage.CreateDeviceProfile(storage.DB(), &dp); err != nil {
@@ -394,26 +396,28 @@ func (n *NetworkServerAPI) GetDeviceProfile(ctx context.Context, req *ns.GetDevi
 
 	resp := ns.GetDeviceProfileResponse{
 		DeviceProfile: &ns.DeviceProfile{
-			Id:                 dp.ID.Bytes(),
-			SupportsClassB:     dp.SupportsClassB,
-			ClassBTimeout:      uint32(dp.ClassBTimeout),
-			PingSlotPeriod:     uint32(dp.PingSlotPeriod),
-			PingSlotDr:         uint32(dp.PingSlotDR),
-			PingSlotFreq:       uint32(dp.PingSlotFreq),
-			SupportsClassC:     dp.SupportsClassC,
-			ClassCTimeout:      uint32(dp.ClassCTimeout),
-			MacVersion:         dp.MACVersion,
-			RegParamsRevision:  dp.RegParamsRevision,
-			RxDelay_1:          uint32(dp.RXDelay1),
-			RxDrOffset_1:       uint32(dp.RXDROffset1),
-			RxDatarate_2:       uint32(dp.RXDataRate2),
-			RxFreq_2:           uint32(dp.RXFreq2),
-			FactoryPresetFreqs: factoryPresetFreqs,
-			MaxEirp:            uint32(dp.MaxEIRP),
-			MaxDutyCycle:       uint32(dp.MaxDutyCycle),
-			SupportsJoin:       dp.SupportsJoin,
-			RfRegion:           string(dp.RFRegion),
-			Supports_32BitFCnt: dp.Supports32bitFCnt,
+			Id:                  dp.ID.Bytes(),
+			SupportsClassB:      dp.SupportsClassB,
+			ClassBTimeout:       uint32(dp.ClassBTimeout),
+			PingSlotPeriod:      uint32(dp.PingSlotPeriod),
+			PingSlotDr:          uint32(dp.PingSlotDR),
+			PingSlotFreq:        uint32(dp.PingSlotFreq),
+			SupportsClassC:      dp.SupportsClassC,
+			ClassCTimeout:       uint32(dp.ClassCTimeout),
+			MacVersion:          dp.MACVersion,
+			RegParamsRevision:   dp.RegParamsRevision,
+			RxDelay_1:           uint32(dp.RXDelay1),
+			RxDrOffset_1:        uint32(dp.RXDROffset1),
+			RxDatarate_2:        uint32(dp.RXDataRate2),
+			RxFreq_2:            uint32(dp.RXFreq2),
+			FactoryPresetFreqs:  factoryPresetFreqs,
+			MaxEirp:             uint32(dp.MaxEIRP),
+			MaxDutyCycle:        uint32(dp.MaxDutyCycle),
+			SupportsJoin:        dp.SupportsJoin,
+			RfRegion:            string(dp.RFRegion),
+			Supports_32BitFCnt:  dp.Supports32bitFCnt,
+			GeolocBufferTtl:     uint32(dp.GeolocBufferTTL),
+			GeolocMinBufferSize: uint32(dp.GeolocMinBufferSize),
 		},
 	}
 
@@ -469,6 +473,8 @@ func (n *NetworkServerAPI) UpdateDeviceProfile(ctx context.Context, req *ns.Upda
 	dp.SupportsJoin = req.DeviceProfile.SupportsJoin
 	dp.Supports32bitFCnt = req.DeviceProfile.Supports_32BitFCnt
 	dp.RFRegion = band.Band().Name()
+	dp.GeolocBufferTTL = int(req.DeviceProfile.GeolocBufferTtl)
+	dp.GeolocMinBufferSize = int(req.DeviceProfile.GeolocMinBufferSize)
 
 	if err := storage.FlushDeviceProfileCache(storage.RedisPool(), dp.ID); err != nil {
 		return nil, errToRPCError(err)
@@ -663,18 +669,10 @@ func (n *NetworkServerAPI) ActivateDevice(ctx context.Context, req *ns.ActivateD
 
 	// The device is never set to DeviceModeB because the device first needs to
 	// aquire a Class-B beacon lock and will signal this to the network-server.
-	// For LoRaWAN 1.0 the device will be set to DeviceModeC when support for
-	// Class-C has been enabled. For LoRaWAN 1.1 devices, DeviceModeA is always
-	// set as the device will signal it has switched to Class-C using the
-	// DeviceModeInd mac-command (which is not available in LoRaWAN 1.0).
-	if ds.GetMACVersion() == lorawan.LoRaWAN1_1 {
-		d.Mode = storage.DeviceModeA
+	if dp.SupportsClassC {
+		d.Mode = storage.DeviceModeC
 	} else {
-		if dp.SupportsClassC {
-			d.Mode = storage.DeviceModeC
-		} else {
-			d.Mode = storage.DeviceModeA
-		}
+		d.Mode = storage.DeviceModeA
 	}
 	if err := storage.UpdateDevice(storage.DB(), &d); err != nil {
 		return nil, errToRPCError(err)
@@ -1319,11 +1317,6 @@ func (n *NetworkServerAPI) CreateDeviceQueueItem(ctx context.Context, req *ns.Cr
 	// the next ping-slot.
 	if dp.SupportsClassB {
 		// check if device is currently active and is operating in Class-B mode
-		ds, err := storage.GetDeviceSession(storage.RedisPool(), d.DevEUI)
-		if err != nil && err != storage.ErrDoesNotExist {
-			return nil, errToRPCError(err)
-		}
-
 		if err == nil && ds.BeaconLocked {
 			scheduleAfterGPSEpochTS, err := storage.GetMaxEmitAtTimeSinceGPSEpochForDevEUI(storage.DB(), d.DevEUI)
 			if err != nil {

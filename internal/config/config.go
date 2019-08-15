@@ -25,6 +25,7 @@ type Config struct {
 	Redis struct {
 		URL         string        `mapstructure:"url"`
 		MaxIdle     int           `mapstructure:"max_idle"`
+		MaxActive   int           `mapstructure:"max_active"`
 		IdleTimeout time.Duration `mapstructure:"idle_timeout"`
 	}
 
@@ -36,9 +37,11 @@ type Config struct {
 		GetDownlinkDataDelay time.Duration `mapstructure:"get_downlink_data_delay"`
 
 		Band struct {
-			Name               band.Name
-			DwellTime400ms     bool `mapstructure:"dwell_time_400ms"`
-			RepeaterCompatible bool `mapstructure:"repeater_compatible"`
+			Name                   band.Name
+			UplinkDwellTime400ms   bool    `mapstructure:"uplink_dwell_time_400ms"`
+			DownlinkDwellTime400ms bool    `mapstructure:"downlink_dwell_time_400ms"`
+			UplinkMaxEIRP          float32 `mapstructure:"uplink_max_eirp"`
+			RepeaterCompatible     bool    `mapstructure:"repeater_compatible"`
 		}
 
 		NetworkSettings struct {
@@ -170,13 +173,20 @@ type Config struct {
 
 	Metrics struct {
 		Timezone string `mapstructure:"timezone"`
-		Redis    struct {
+
+		Redis struct {
 			AggregationIntervals []string      `mapstructure:"aggregation_intervals"`
 			MinuteAggregationTTL time.Duration `mapstructure:"minute_aggregation_ttl"`
 			HourAggregationTTL   time.Duration `mapstructure:"hour_aggregation_ttl"`
 			DayAggregationTTL    time.Duration `mapstructure:"day_aggregation_ttl"`
 			MonthAggregationTTL  time.Duration `mapstructure:"month_aggregation_ttl"`
 		} `mapstructure:"redis"`
+
+		Prometheus struct {
+			EndpointEnabled    bool   `mapstructure:"endpoint_enabled"`
+			Bind               string `mapstructure:"bind"`
+			APITimingHistogram bool   `mapstructure:"api_timing_histogram"`
+		}
 	} `mapstructure:"metrics"`
 }
 
