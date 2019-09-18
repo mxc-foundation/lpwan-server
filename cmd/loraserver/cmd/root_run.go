@@ -61,6 +61,7 @@ func run(cmd *cobra.Command, args []string) error {
 		setupDownlink,
 		fixV2RedisCache,
 		migrateGatewayStats,
+		flushGatewayCache,
 		setupAPI,
 		startLoRaServer(server),
 		startStatsServer(gwStats),
@@ -185,7 +186,7 @@ func enableUplinkChannels() error {
 	log.WithField("channels", config.C.NetworkServer.NetworkSettings.EnabledUplinkChannels).Info("enabling channels")
 	for _, c := range config.C.NetworkServer.NetworkSettings.EnabledUplinkChannels {
 		if err := band.Band().EnableUplinkChannelIndex(c); err != nil {
-			errors.Wrap(err, "enable uplink channel error")
+			return errors.Wrap(err, "enable uplink channel error")
 		}
 	}
 
@@ -201,7 +202,7 @@ func setupStorage() error {
 
 func setupADR() error {
 	if err := adr.Setup(config.C); err != nil {
-		errors.Wrap(err, "setup adr error")
+		return errors.Wrap(err, "setup adr error")
 	}
 	return nil
 }
@@ -402,5 +403,11 @@ func fixV2RedisCache() error {
 func migrateGatewayStats() error {
 	return code.Migrate("migrate_gateway_stats_to_redis", func(db sqlx.Ext) error {
 		return code.MigrateGatewayStats(storage.RedisPool(), db)
+	})
+}
+
+func flushGatewayCache() error {
+	return code.Migrate("stats_migration_flush_gw_cache", func(db sqlx.Ext) error {
+		return code.FlushGatewayCache(db)
 	})
 }
