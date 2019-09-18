@@ -1,6 +1,7 @@
 package testsuite
 
 import (
+	"context"
 	"errors"
 	"testing"
 	"time"
@@ -55,7 +56,7 @@ func (ts *OTAATestSuite) TestLW10() {
 	conf := test.GetConfig()
 
 	ts.DeviceProfile.MACVersion = "1.0.2"
-	assert.NoError(storage.UpdateDeviceProfile(storage.DB(), ts.DeviceProfile))
+	assert.NoError(storage.UpdateDeviceProfile(context.Background(), storage.DB(), ts.DeviceProfile))
 
 	rxInfo := gw.UplinkRXInfo{
 		GatewayId: ts.Gateway.GatewayID[:],
@@ -259,7 +260,6 @@ func (ts *OTAATestSuite) TestLW10() {
 					RXWindow:              storage.RX1,
 					EnabledUplinkChannels: []int{0, 1, 2},
 					ExtraUplinkChannels:   map[int]loraband.Channel{},
-					UplinkGatewayHistory:  map[lorawan.EUI64]storage.UplinkGatewayHistory{},
 					RX2Frequency:          band.Band().GetDefaults().RX2Frequency,
 					NbTrans:               1,
 					ReferenceAltitude:     5.6,
@@ -272,7 +272,7 @@ func (ts *OTAATestSuite) TestLW10() {
 			Name: "join-request accepted + skip fcnt check set (rx1 + rx2)",
 			BeforeFunc: func(*OTAATest) error {
 				ts.Device.SkipFCntCheck = true
-				return storage.UpdateDevice(storage.DB(), ts.Device)
+				return storage.UpdateDevice(context.Background(), storage.DB(), ts.Device)
 			},
 			RXInfo:     rxInfo,
 			TXInfo:     txInfo,
@@ -359,7 +359,6 @@ func (ts *OTAATestSuite) TestLW10() {
 					RXWindow:              storage.RX1,
 					EnabledUplinkChannels: []int{0, 1, 2},
 					ExtraUplinkChannels:   map[int]loraband.Channel{},
-					UplinkGatewayHistory:  map[lorawan.EUI64]storage.UplinkGatewayHistory{},
 					RX2Frequency:          band.Band().GetDefaults().RX2Frequency,
 					SkipFCntValidation:    true,
 					NbTrans:               1,
@@ -372,7 +371,7 @@ func (ts *OTAATestSuite) TestLW10() {
 			Name: "join-request accepted + cflist channels",
 			BeforeFunc: func(*OTAATest) error {
 				ts.Device.SkipFCntCheck = false
-				return storage.UpdateDevice(storage.DB(), ts.Device)
+				return storage.UpdateDevice(context.Background(), storage.DB(), ts.Device)
 			},
 			RXInfo:        rxInfo,
 			TXInfo:        txInfo,
@@ -422,7 +421,7 @@ func (ts *OTAATestSuite) TestLW10() {
 			BeforeFunc: func(*OTAATest) error {
 				ts.DeviceProfile.SupportsClassB = true
 				ts.DeviceProfile.SupportsClassC = false
-				return storage.UpdateDeviceProfile(storage.DB(), ts.DeviceProfile)
+				return storage.UpdateDeviceProfile(context.Background(), storage.DB(), ts.DeviceProfile)
 			},
 			RXInfo:     rxInfo,
 			TXInfo:     txInfo,
@@ -445,7 +444,7 @@ func (ts *OTAATestSuite) TestLW10() {
 			BeforeFunc: func(*OTAATest) error {
 				ts.DeviceProfile.SupportsClassB = false
 				ts.DeviceProfile.SupportsClassC = true
-				return storage.UpdateDeviceProfile(storage.DB(), ts.DeviceProfile)
+				return storage.UpdateDeviceProfile(context.Background(), storage.DB(), ts.DeviceProfile)
 			},
 			RXInfo:     rxInfo,
 			TXInfo:     txInfo,
@@ -480,7 +479,7 @@ func (ts *OTAATestSuite) TestLW11() {
 	ts.DeviceProfile.SupportsClassB = false
 	ts.DeviceProfile.SupportsClassC = false
 	ts.DeviceProfile.MACVersion = "1.1.0"
-	assert.NoError(storage.UpdateDeviceProfile(storage.DB(), ts.DeviceProfile))
+	assert.NoError(storage.UpdateDeviceProfile(context.Background(), storage.DB(), ts.DeviceProfile))
 
 	rxInfo := gw.UplinkRXInfo{
 		GatewayId: ts.Gateway.GatewayID[:],
@@ -651,7 +650,6 @@ func (ts *OTAATestSuite) TestLW11() {
 					RXWindow:              storage.RX1,
 					EnabledUplinkChannels: []int{0, 1, 2},
 					ExtraUplinkChannels:   map[int]loraband.Channel{},
-					UplinkGatewayHistory:  map[lorawan.EUI64]storage.UplinkGatewayHistory{},
 					RX2Frequency:          band.Band().GetDefaults().RX2Frequency,
 					NbTrans:               1,
 					ReferenceAltitude:     5.6,
@@ -786,7 +784,6 @@ func (ts *OTAATestSuite) TestLW11() {
 					RXWindow:              storage.RX1,
 					EnabledUplinkChannels: []int{0, 1, 2},
 					ExtraUplinkChannels:   map[int]loraband.Channel{},
-					UplinkGatewayHistory:  map[lorawan.EUI64]storage.UplinkGatewayHistory{},
 					RX2Frequency:          band.Band().GetDefaults().RX2Frequency,
 					NbTrans:               1,
 					ReferenceAltitude:     5.6,
@@ -800,7 +797,7 @@ func (ts *OTAATestSuite) TestLW11() {
 			BeforeFunc: func(*OTAATest) error {
 				ts.DeviceProfile.SupportsClassB = true
 				ts.DeviceProfile.SupportsClassC = false
-				return storage.UpdateDeviceProfile(storage.DB(), ts.DeviceProfile)
+				return storage.UpdateDeviceProfile(context.Background(), storage.DB(), ts.DeviceProfile)
 			},
 			RXInfo:     rxInfo,
 			TXInfo:     txInfo,
@@ -823,7 +820,7 @@ func (ts *OTAATestSuite) TestLW11() {
 			BeforeFunc: func(*OTAATest) error {
 				ts.DeviceProfile.SupportsClassB = false
 				ts.DeviceProfile.SupportsClassC = true
-				return storage.UpdateDeviceProfile(storage.DB(), ts.DeviceProfile)
+				return storage.UpdateDeviceProfile(context.Background(), storage.DB(), ts.DeviceProfile)
 			},
 			RXInfo:     rxInfo,
 			TXInfo:     txInfo,

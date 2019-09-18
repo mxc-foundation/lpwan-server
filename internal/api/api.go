@@ -13,6 +13,7 @@ import (
 
 	"github.com/brocaar/loraserver/api/ns"
 	"github.com/brocaar/loraserver/internal/config"
+	"github.com/brocaar/loraserver/internal/logging"
 	"github.com/brocaar/loraserver/internal/tls"
 )
 
@@ -40,7 +41,6 @@ func Setup(c config.Config) error {
 	gs := grpc.NewServer(opts...)
 	nsAPI := NewNetworkServerAPI()
 	ns.RegisterNetworkServerServiceServer(gs, nsAPI)
-	grpc_prometheus.Register(gs)
 
 	ln, err := net.Listen("tcp", apiConfig.Bind)
 	if err != nil {
@@ -61,6 +61,7 @@ func serverOptions() []grpc.ServerOption {
 		grpc_middleware.WithUnaryServerChain(
 			grpc_ctxtags.UnaryServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
 			grpc_logrus.UnaryServerInterceptor(logrusEntry, logrusOpts...),
+			logging.UnaryServerCtxIDInterceptor,
 			grpc_prometheus.UnaryServerInterceptor,
 		),
 		grpc_middleware.WithStreamServerChain(

@@ -1,6 +1,7 @@
 package testsuite
 
 import (
+	"context"
 	"errors"
 	"testing"
 	"time"
@@ -958,11 +959,11 @@ func (ts *ClassATestSuite) TestLW10MACCommands() {
 				}
 
 				ts.ServiceProfile.DevStatusReqFreq = 1
-				return storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile)
+				return storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile)
 			},
 			AfterFunc: func(tst *ClassATest) error {
 				ts.ServiceProfile.DevStatusReqFreq = 0
-				return storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile)
+				return storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile)
 			},
 			DeviceSession: *ts.DeviceSession,
 			TXInfo:        ts.TXInfo,
@@ -1031,11 +1032,11 @@ func (ts *ClassATestSuite) TestLW10MACCommands() {
 				}
 
 				ts.ServiceProfile.DevStatusReqFreq = 1
-				return storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile)
+				return storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile)
 			},
 			AfterFunc: func(tst *ClassATest) error {
 				ts.ServiceProfile.DevStatusReqFreq = 0
-				return storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile)
+				return storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile)
 			},
 			DeviceSession: *ts.DeviceSession,
 			DeviceQueueItems: []storage.DeviceQueueItem{
@@ -1484,7 +1485,7 @@ func (ts *ClassATestSuite) TestLW10AddGWMetadata() {
 	})
 
 	ts.ServiceProfile.AddGWMetadata = false
-	assert.NoError(storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile))
+	assert.NoError(storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile))
 
 	fPortOne := uint8(1)
 
@@ -1533,7 +1534,7 @@ func (ts *ClassATestSuite) TestLW10AddGWMetadata() {
 	}
 
 	ts.ServiceProfile.AddGWMetadata = true
-	assert.NoError(storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile))
+	assert.NoError(storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile))
 }
 
 func (ts *ClassATestSuite) TestLW11DeviceQueue() {
@@ -2010,11 +2011,11 @@ func (ts *ClassATestSuite) TestLW10DeviceQueue() {
 			Name: "unconfirmed uplink data + one unconfirmed downlink payload in queue (exactly max size for dr 0) + one mac command",
 			BeforeFunc: func(tst *ClassATest) error {
 				ts.ServiceProfile.DevStatusReqFreq = 1
-				return storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile)
+				return storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile)
 			},
 			AfterFunc: func(tst *ClassATest) error {
 				ts.ServiceProfile.DevStatusReqFreq = 0
-				return storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile)
+				return storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile)
 			},
 			DeviceSession: *ts.DeviceSession,
 			TXInfo:        ts.TXInfo,
@@ -2708,7 +2709,7 @@ func (ts *ClassATestSuite) TestLW10DeviceStatusRequest() {
 	ts.ServiceProfile.DevStatusReqFreq = 24
 	ts.ServiceProfile.ReportDevStatusBattery = true
 	ts.ServiceProfile.ReportDevStatusMargin = true
-	assert.NoError(storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile))
+	assert.NoError(storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile))
 
 	fPortOne := uint8(1)
 
@@ -2893,7 +2894,7 @@ func (ts *ClassATestSuite) TestLW10DeviceStatusRequest() {
 	ts.ServiceProfile.DevStatusReqFreq = 0
 	ts.ServiceProfile.ReportDevStatusBattery = false
 	ts.ServiceProfile.ReportDevStatusMargin = false
-	assert.NoError(storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile))
+	assert.NoError(storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile))
 }
 
 func (ts *ClassATestSuite) TestLW11ReceiveWindowSelection() {
@@ -2987,10 +2988,86 @@ func (ts *ClassATestSuite) TestLW11ReceiveWindowSelection() {
 			},
 		},
 		{
-			Name: "unconfirmed uplink with payload (rx2)",
+			Name: "unconfirmed uplink with payload (rxdelay = 0, rx2)",
 			BeforeFunc: func(tst *ClassATest) error {
 				conf := test.GetConfig()
 				conf.NetworkServer.NetworkSettings.RXWindow = 2
+				conf.NetworkServer.NetworkSettings.RX1Delay = 0
+
+				return downlink.Setup(conf)
+			},
+			DeviceQueueItems: []storage.DeviceQueueItem{
+				{DevEUI: ts.Device.DevEUI, FRMPayload: []byte{1}, FPort: 1, FCnt: 4},
+			},
+			DeviceSession: *ts.DeviceSession,
+			TXInfo:        ts.TXInfo,
+			RXInfo:        ts.RXInfo,
+			PHYPayload: lorawan.PHYPayload{
+				MHDR: lorawan.MHDR{
+					MType: lorawan.UnconfirmedDataUp,
+					Major: lorawan.LoRaWANR1,
+				},
+				MACPayload: &lorawan.MACPayload{
+					FHDR: lorawan.FHDR{
+						DevAddr: ts.DeviceSession.DevAddr,
+						FCnt:    10,
+					},
+					FPort:      &fPortOne,
+					FRMPayload: []lorawan.Payload{&lorawan.DataPayload{Bytes: []byte{1, 2, 3, 4}}},
+				},
+				MIC: lorawan.MIC{104, 147, 104, 147},
+			},
+			Assert: []Assertion{
+				AssertFCntUp(11),
+				AssertNFCntDown(5),
+				AssertDownlinkFrame(gw.DownlinkTXInfo{
+					GatewayId:  ts.Gateway.GatewayID[:],
+					Frequency:  869525000,
+					Power:      14,
+					Modulation: common.Modulation_LORA,
+					ModulationInfo: &gw.DownlinkTXInfo_LoraModulationInfo{
+						LoraModulationInfo: &gw.LoRaModulationInfo{
+							Bandwidth:             125,
+							SpreadingFactor:       12,
+							PolarizationInversion: true,
+							CodeRate:              "4/5",
+						},
+					},
+					Context: ts.RXInfo.Context,
+					Timing:  gw.DownlinkTiming_DELAY,
+					TimingInfo: &gw.DownlinkTXInfo_DelayTimingInfo{
+						DelayTimingInfo: &gw.DelayTimingInfo{
+							Delay: ptypes.DurationProto(time.Second * 2),
+						},
+					},
+				}, lorawan.PHYPayload{
+					MHDR: lorawan.MHDR{
+						MType: lorawan.UnconfirmedDataDown,
+						Major: lorawan.LoRaWANR1,
+					},
+					MACPayload: &lorawan.MACPayload{
+						FHDR: lorawan.FHDR{
+							DevAddr: ts.DeviceSession.DevAddr,
+							FCnt:    4,
+							FCtrl: lorawan.FCtrl{
+								ADR: true,
+							},
+						},
+						FPort:      &fPortOne,
+						FRMPayload: []lorawan.Payload{&lorawan.DataPayload{Bytes: []byte{1}}},
+					},
+					MIC: lorawan.MIC{0xc3, 0xe2, 0xfc, 0x50},
+				}),
+			},
+		},
+		{
+			Name: "unconfirmed uplink with payload (rxdelay = 1, rx2)",
+			BeforeFunc: func(tst *ClassATest) error {
+				conf := test.GetConfig()
+				conf.NetworkServer.NetworkSettings.RXWindow = 2
+				conf.NetworkServer.NetworkSettings.RX1Delay = 1
+
+				tst.DeviceSession.RXDelay = 1
 
 				return downlink.Setup(conf)
 			},
@@ -3249,7 +3326,7 @@ func (ts *ClassATestSuite) TestLW11ReceiveWindowSelection() {
 				downlink.Setup(conf)
 
 				ts.ServiceProfile.DevStatusReqFreq = 1
-				if err := storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile); err != nil {
+				if err := storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile); err != nil {
 					return err
 				}
 
@@ -3257,7 +3334,7 @@ func (ts *ClassATestSuite) TestLW11ReceiveWindowSelection() {
 			},
 			AfterFunc: func(tst *ClassATest) error {
 				ts.ServiceProfile.DevStatusReqFreq = 0
-				return storage.UpdateServiceProfile(storage.DB(), ts.ServiceProfile)
+				return storage.UpdateServiceProfile(context.Background(), storage.DB(), ts.ServiceProfile)
 			},
 			DeviceQueueItems: []storage.DeviceQueueItem{
 				{DevEUI: ts.Device.DevEUI, FRMPayload: make([]byte, 51), FPort: 1, FCnt: 4},
