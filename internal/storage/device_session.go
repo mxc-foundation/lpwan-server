@@ -11,17 +11,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gofrs/uuid"
-	proto "github.com/golang/protobuf/proto"
-	"github.com/gomodule/redigo/redis"
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
-
 	"github.com/brocaar/loraserver/api/common"
 	"github.com/brocaar/loraserver/internal/band"
 	"github.com/brocaar/loraserver/internal/logging"
 	"github.com/brocaar/lorawan"
 	loraband "github.com/brocaar/lorawan/band"
+	"github.com/gofrs/uuid"
+	proto "github.com/golang/protobuf/proto"
+	"github.com/gomodule/redigo/redis"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -556,6 +555,8 @@ func DeleteDeviceGatewayRXInfoSet(ctx context.Context, p *redis.Pool, devEUI lor
 // GetDeviceGatewayRXInfoSet returns the DeviceGatewayRXInfoSet for the given
 // Device EUI.
 func GetDeviceGatewayRXInfoSet(ctx context.Context, p *redis.Pool, devEUI lorawan.EUI64) (DeviceGatewayRXInfoSet, error) {
+	fmt.Println("  @@ device_session.go/GetDeviceGatewayRXInfoSet - ctx: ", ctx) //@@
+
 	var rxInfoSetPB DeviceGatewayRXInfoSetPB
 
 	c := p.Get()
@@ -574,6 +575,7 @@ func GetDeviceGatewayRXInfoSet(ctx context.Context, p *redis.Pool, devEUI lorawa
 		return DeviceGatewayRXInfoSet{}, errors.Wrap(err, "protobuf unmarshal error")
 	}
 
+	fmt.Println("  @@ device_session.go/GetDeviceGatewayRXInfoSet - ctx.rxInfoSetPB: ", rxInfoSetPB) //@@
 	return deviceGatewayRXInfoSetFromPB(rxInfoSetPB), nil
 }
 
@@ -644,8 +646,8 @@ func deviceSessionToPB(d DeviceSession) DeviceSessionPB {
 		Rx2Frequency: uint32(d.RX2Frequency),
 		TxPowerIndex: uint32(d.TXPowerIndex),
 
-		Dr:                       uint32(d.DR),
-		Adr:                      d.ADR,
+		Dr:  uint32(d.DR),
+		Adr: d.ADR,
 		MinSupportedTxPowerIndex: uint32(d.MinSupportedTXPowerIndex),
 		MaxSupportedTxPowerIndex: uint32(d.MaxSupportedTXPowerIndex),
 		NbTrans:                  uint32(d.NbTrans),
@@ -741,8 +743,8 @@ func deviceSessionFromPB(d DeviceSessionPB) DeviceSession {
 		RX2Frequency: int(d.Rx2Frequency),
 		TXPowerIndex: int(d.TxPowerIndex),
 
-		DR:                       int(d.Dr),
-		ADR:                      d.Adr,
+		DR:  int(d.Dr),
+		ADR: d.Adr,
 		MinSupportedTXPowerIndex: int(d.MinSupportedTxPowerIndex),
 		MaxSupportedTXPowerIndex: int(d.MaxSupportedTxPowerIndex),
 		NbTrans:                  uint8(d.NbTrans),

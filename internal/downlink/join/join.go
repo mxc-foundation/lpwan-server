@@ -4,11 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/binary"
-
-	"github.com/gofrs/uuid"
-	"github.com/golang/protobuf/ptypes"
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
+	"fmt"
 
 	"github.com/brocaar/loraserver/api/gw"
 	"github.com/brocaar/loraserver/internal/backend/gateway"
@@ -20,6 +16,10 @@ import (
 	"github.com/brocaar/loraserver/internal/models"
 	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
+	"github.com/gofrs/uuid"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -29,6 +29,7 @@ var (
 
 var tasks = []func(*joinContext) error{
 	setDeviceGatewayRXInfo,
+	smbReorderGateways,
 	setTXInfo,
 	setToken,
 	setDownlinkFrame,
@@ -96,6 +97,15 @@ func setDeviceGatewayRXInfo(ctx *joinContext) error {
 		return errors.New("DeviceGatewayRXInfo is empty!")
 	}
 
+	return nil
+}
+
+// reorder gateways based on SMB of MXProtcol
+func smbReorderGateways(ctx *joinContext) error {
+	fmt.Println("  @@ join.go/smbReorderGateways - primary ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo)                                                                     //@@
+	fmt.Println("  @@ join.go/smbReorderGateways - ctx.DeviceGatewayRXInfo[0].GatewayID: ", ctx.DeviceGatewayRXInfo[0].GatewayID, "ctx.DeviceSession.DevEUI: ", ctx.DeviceSession.DevEUI) //@@
+
+	fmt.Println("  @@ join.go/smbReorderGateways - moddified ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 	return nil
 }
 

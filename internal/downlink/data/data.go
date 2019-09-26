@@ -93,6 +93,7 @@ var responseTasks = []func(*dataContext) error{
 	getDeviceProfile,
 	getServiceProfile,
 	setDeviceGatewayRXInfo,
+	smbReorderGateways,
 	setDataTXInfo,
 	setToken,
 	getNextDeviceQueueItem,
@@ -404,6 +405,18 @@ func setTXParameters(ctx *dataContext) error {
 	return nil
 }
 
+// reorder gateways based on SMB of MXProtcol
+func smbReorderGateways(ctx *dataContext) error {
+	fmt.Println("  @@ data.go/smbReorderGateways - primary ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+
+	if len(ctx.DeviceGatewayRXInfo) > 0 {
+		fmt.Println("  @@ data.go/smbReorderGateways - ctx.DeviceGatewayRXInfo[0].GatewayID: ", ctx.DeviceGatewayRXInfo[0].GatewayID, "ctx.DeviceSession.DevEUI: ", ctx.DeviceSession.DevEUI) //@@
+	}
+
+	fmt.Println("  @@ data.go/smbReorderGateways - moddified ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+	return nil
+}
+
 func setDataTXInfo(ctx *dataContext) error {
 	if rxWindow == 0 || rxWindow == 1 {
 		if err := setTXInfoForRX1(ctx); err != nil {
@@ -422,7 +435,8 @@ func setDataTXInfo(ctx *dataContext) error {
 
 func setTXInfoForRX1(ctx *dataContext) error {
 
-	fmt.Println("@@ data.go/setTXInfoForRX1 - ctx.DeviceGatewayRXInfo[0]: ", ctx.DeviceGatewayRXInfo[0]) //@@
+	fmt.Println("@@ data.go/setTXInfoForRX1 - ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+
 	rxInfo := ctx.DeviceGatewayRXInfo[0]
 
 	txInfo := gw.DownlinkTXInfo{

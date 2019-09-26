@@ -3,13 +3,13 @@ package ack
 import (
 	"context"
 	"encoding/binary"
-
-	"github.com/brocaar/lorawan"
-	"github.com/pkg/errors"
+	"fmt"
 
 	"github.com/brocaar/loraserver/api/gw"
 	"github.com/brocaar/loraserver/internal/backend/gateway"
 	"github.com/brocaar/loraserver/internal/storage"
+	"github.com/brocaar/lorawan"
+	"github.com/pkg/errors"
 )
 
 var (
@@ -17,6 +17,7 @@ var (
 )
 
 var handleDownlinkTXAckTasks = []func(*ackContext) error{
+	smbPacketPayment,
 	abortOnNoError,
 	getToken,
 	getDownlinkFrame,
@@ -48,6 +49,15 @@ func HandleDownlinkTXAck(ctx context.Context, downlinkTXAck gw.DownlinkTXAck) er
 		}
 	}
 
+	return nil
+}
+
+func smbPacketPayment(ctx *ackContext) error {
+	if ctx.DownlinkTXAck.Error != "" {
+		return nil
+	}
+	fmt.Println("  @@ ack.go/abortOnNoError - Downlink is sent successfully- ctx: ", ctx) //@@
+	// retrieve ctx based on Token
 	return nil
 }
 
