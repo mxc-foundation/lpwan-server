@@ -56,6 +56,6 @@ func init() {
 var version string // set by the compiler
 
 func main() {
-	fmt.Println("MVP prototype is running!")
+	fmt.Println("MVP prototype is running !!")
 	cmd.Execute(version)
 }

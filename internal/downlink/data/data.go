@@ -103,6 +103,7 @@ var responseTasks = []func(*dataContext) error{
 	sendDownlinkFrame,
 	saveDeviceSession,
 	saveRemainingFrames,
+	//@@savePaymetnConts
 }
 
 var scheduleNextQueueItemTasks = []func(*dataContext) error{
@@ -110,6 +111,7 @@ var scheduleNextQueueItemTasks = []func(*dataContext) error{
 	getServiceProfile,
 	checkLastDownlinkTimestamp,
 	setDeviceGatewayRXInfo,
+	// @@ smbCall()
 	forClass(storage.DeviceModeC,
 		setImmediately,
 		setTXInfoForRX2,
