@@ -3,12 +3,8 @@ package data
 import (
 	"context"
 	"encoding/binary"
+	"fmt"
 	"time"
-
-	"github.com/gofrs/uuid"
-	"github.com/golang/protobuf/ptypes"
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 
 	"github.com/brocaar/loraserver/api/gw"
 	"github.com/brocaar/loraserver/internal/adr"
@@ -24,6 +20,10 @@ import (
 	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
 	loraband "github.com/brocaar/lorawan/band"
+	"github.com/gofrs/uuid"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 const defaultCodeRate = "4/5"
@@ -421,6 +421,8 @@ func setDataTXInfo(ctx *dataContext) error {
 }
 
 func setTXInfoForRX1(ctx *dataContext) error {
+
+	fmt.Println("@@ data.go/setTXInfoForRX1 - ctx.DeviceGatewayRXInfo[0]: ", ctx.DeviceGatewayRXInfo[0]) //@@
 	rxInfo := ctx.DeviceGatewayRXInfo[0]
 
 	txInfo := gw.DownlinkTXInfo{
@@ -1114,7 +1116,7 @@ func checkLastDownlinkTimestamp(ctx *dataContext) error {
 			"time":                           time.Now(),
 			"last_downlink_tx_time":          ctx.DeviceSession.LastDownlinkTX,
 			"class_c_downlink_lock_duration": classCDownlinkLockDuration,
-			"ctx_id":                         ctx.ctx.Value(logging.ContextIDKey),
+			"ctx_id": ctx.ctx.Value(logging.ContextIDKey),
 		}).Debug("skip next downlink queue scheduling dueue to class-c downlink lock")
 		return ErrAbort
 	}

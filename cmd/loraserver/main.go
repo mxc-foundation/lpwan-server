@@ -1,10 +1,11 @@
 package main
 
 import (
-	log "github.com/sirupsen/logrus"
-	"google.golang.org/grpc/grpclog"
+	"fmt"
 
 	"github.com/brocaar/loraserver/cmd/loraserver/cmd"
+	log "github.com/sirupsen/logrus"
+	"google.golang.org/grpc/grpclog"
 )
 
 // grpcLogger implements a wrapper around the logrus Logger to make it
@@ -55,5 +56,6 @@ func init() {
 var version string // set by the compiler
 
 func main() {
+	fmt.Println("MVP prototype is running!")
 	cmd.Execute(version)
 }
