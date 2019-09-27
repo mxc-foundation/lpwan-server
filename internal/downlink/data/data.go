@@ -1,14 +1,17 @@
 package data
 
 import (
+	// m2m_api "api/m2m_server"
 	"context"
 	"encoding/binary"
 	"fmt"
 	"time"
 
 	"github.com/brocaar/loraserver/api/gw"
+	m2m_api "github.com/brocaar/loraserver/api/m2m_server"
 	"github.com/brocaar/loraserver/internal/adr"
 	"github.com/brocaar/loraserver/internal/backend/gateway"
+	"github.com/brocaar/loraserver/internal/backend/m2m_client"
 	"github.com/brocaar/loraserver/internal/band"
 	"github.com/brocaar/loraserver/internal/channels"
 	"github.com/brocaar/loraserver/internal/config"
@@ -419,6 +422,51 @@ func smbReorderGateways(ctx *dataContext) error {
 	return nil
 }
 
+func testM2MApi() {
+
+	fmt.Println("@@++++++++++++++++/ testing M2M API begin")
+
+	// add this device to m2m server
+	// m2mClient, err := m2m_client.GetPool().Get(config.C.M2MServer.M2MServer, []byte(config.C.M2MServer.CACert),
+	// 	[]byte(config.C.M2MServer.TLSCert), []byte(config.C.M2MServer.TLSKey))
+	// if err != nil {
+	// 	return errors.Wrap(err, "get m2m-server client error")
+	// }
+
+	fmt.Println("@@-1")
+	m2mClient, err := m2m_client.GetPool().Get("mxprotocol-server:4000", []byte{}, []byte{}, []byte{})
+	// m2mClient, err := m2m_client.GetPool().Get("mxprotocol-server:4000", "", "", "")
+	fmt.Println("@@-2")
+	if err != nil {
+		fmt.Println("@@-3")
+		fmt.Println(errors.Wrap(err, "get m2m-server client error"))
+		return
+	}
+	fmt.Println("@@-4")
+	// _, err = m2mClient.AddDeviceInM2MServer(context.Background(), &m2m_api.AddDeviceInM2MServerRequest{
+	// 	OrgId: app.OrganizationID,
+	// 	DevProfile: &m2m_api.AppServerDeviceProfile{
+	// 		DevEui:        d.DevEUI.String(),
+	// 		ApplicationId: d.ApplicationID,
+	// 		Name:          d.Name,
+	// 	},
+	// })
+
+	_, err = m2mClient.DvUsageMode(context.Background(), &m2m_api.DvUsageModeRequest{
+		DvEui: "the dv_eui",
+	})
+	fmt.Println("@@-5")
+	if err != nil {
+		fmt.Println("@@-6")
+		log.WithError(err).Error("m2m server create device api error")
+		// return handleGrpcError(err, "create device error")
+		fmt.Println(err, "create device error")
+		return
+	}
+
+	fmt.Println("@@++++++++++++++++ testing M2M API end")
+}
+
 func setDataTXInfo(ctx *dataContext) error {
 	if rxWindow == 0 || rxWindow == 1 {
 		if err := setTXInfoForRX1(ctx); err != nil {
@@ -438,6 +486,8 @@ func setDataTXInfo(ctx *dataContext) error {
 func setTXInfoForRX1(ctx *dataContext) error {
 
 	fmt.Println("@@ data.go/setTXInfoForRX1 - ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+
+	testM2MApi() //@@
 
 	rxInfo := ctx.DeviceGatewayRXInfo[0]
 
