@@ -409,7 +409,7 @@ func setTXParameters(ctx *dataContext) error {
 	return nil
 }
 
-// reorder gateways based on SMB of MXProtcol
+// Reorder the gateways (ctx.DeviceGatewayRXInfo) based on SMB of MXProtcol for sending the downlink
 func smbReorderGateways(ctx *dataContext) error {
 
 	fmt.Println("  @@ Primary order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
@@ -422,7 +422,7 @@ func smbReorderGateways(ctx *dataContext) error {
 		return err
 	}
 
-	if reorderedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+	if reorderedDeviceGatewayRXInfo[0].GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
 		fmt.Println(ErrSmbMxcNotPermittedToSendDl) // log
 		return ErrSmbMxcNotPermittedToSendDl
 	}
@@ -430,7 +430,7 @@ func smbReorderGateways(ctx *dataContext) error {
 	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
 	ctx.DeviceGatewayRXInfo[0] = reorderedDeviceGatewayRXInfo[0]
 
-	fmt.Println("  @@ Moddified ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+	fmt.Println("  @@ Moddified order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 	return nil
 }
 

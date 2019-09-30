@@ -5,7 +5,6 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
-	"fmt"
 	"sync"
 	"time"
 
@@ -41,7 +40,6 @@ func Setup(conf config.Config) error {
 }
 
 func GetPool() Pool {
-	fmt.Println("@@-GP 1") //@@
 	return p
 }
 
@@ -56,7 +54,6 @@ type pool struct {
 
 // Get returns a NetworkServerClient for the given server (hostname:ip).
 func (p *pool) Get(hostname string, caCert, tlsCert, tlsKey []byte) (m2m.M2MServerServiceClient, error) {
-	fmt.Println("@@-G1") //@@
 
 	defer p.Unlock()
 	p.Lock()
