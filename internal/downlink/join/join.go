@@ -10,6 +10,7 @@ import (
 	"github.com/brocaar/loraserver/internal/backend/gateway"
 	"github.com/brocaar/loraserver/internal/band"
 	"github.com/brocaar/loraserver/internal/config"
+	"github.com/brocaar/loraserver/internal/downlink/mxc_smb"
 	"github.com/brocaar/loraserver/internal/framelog"
 	"github.com/brocaar/loraserver/internal/helpers"
 	"github.com/brocaar/loraserver/internal/logging"
@@ -102,10 +103,25 @@ func setDeviceGatewayRXInfo(ctx *joinContext) error {
 
 // reorder gateways based on SMB of MXProtcol
 func smbReorderGateways(ctx *joinContext) error {
-	fmt.Println("  @@ join.go/smbReorderGateways - primary ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo)                                                                     //@@
-	fmt.Println("  @@ join.go/smbReorderGateways - ctx.DeviceGatewayRXInfo[0].GatewayID: ", ctx.DeviceGatewayRXInfo[0].GatewayID, "ctx.DeviceSession.DevEUI: ", ctx.DeviceSession.DevEUI) //@@
+	fmt.Println("  @@  JOIN Req  Primary order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 
-	fmt.Println("  @@ join.go/smbReorderGateways - moddified ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+	// ctx.DeviceSession.DevEUI
+
+	reorderedDeviceGatewayRXInfo, err := mxc_smb.ReorderGateways(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
+	if err != nil {
+		fmt.Println("error reorder ", err) //@@
+		return err
+	}
+
+	if reorderedDeviceGatewayRXInfo[0].GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+		fmt.Println("no permission to send downlink join response from SMB of MXC") // log
+		return errors.New("no permission to send downlink join response from SMB of MXC")
+	}
+
+	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
+	ctx.DeviceGatewayRXInfo[0] = reorderedDeviceGatewayRXInfo[0]
+
+	fmt.Println("  @@ JOIN REQ Moddified order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 	return nil
 }
 
