@@ -107,19 +107,20 @@ func smbReorderGateways(ctx *joinContext) error {
 
 	// ctx.DeviceSession.DevEUI
 
-	reorderedDeviceGatewayRXInfo, err := mxc_smb.ReorderGateways(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
+	SelectedDeviceGatewayRXInfo, err := mxc_smb.SelectSenderGateway(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
 	if err != nil {
 		fmt.Println("error reorder ", err) //@@
 		return err
 	}
 
-	if reorderedDeviceGatewayRXInfo[0].GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+	if SelectedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
 		fmt.Println("no permission to send downlink join response from SMB of MXC") // log
 		return errors.New("no permission to send downlink join response from SMB of MXC")
 	}
 
+	ctx.DeviceGatewayRXInfo = append(ctx.DeviceGatewayRXInfo, storage.DeviceGatewayRXInfo{})
 	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
-	ctx.DeviceGatewayRXInfo[0] = reorderedDeviceGatewayRXInfo[0]
+	ctx.DeviceGatewayRXInfo[0] = SelectedDeviceGatewayRXInfo
 
 	fmt.Println("  @@ JOIN REQ Moddified order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 	return nil

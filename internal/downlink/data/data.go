@@ -416,19 +416,20 @@ func smbReorderGateways(ctx *dataContext) error {
 
 	// ctx.DeviceSession.DevEUI
 
-	reorderedDeviceGatewayRXInfo, err := mxc_smb.ReorderGateways(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
+	SelectedDeviceGatewayRXInfo, err := mxc_smb.SelectSenderGateway(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
 	if err != nil {
 		fmt.Println("error reorder ", err) //@@
 		return err
 	}
 
-	if reorderedDeviceGatewayRXInfo[0].GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+	if SelectedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
 		fmt.Println(ErrSmbMxcNotPermittedToSendDl) // log
 		return ErrSmbMxcNotPermittedToSendDl
 	}
 
+	ctx.DeviceGatewayRXInfo = append(ctx.DeviceGatewayRXInfo, storage.DeviceGatewayRXInfo{})
 	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
-	ctx.DeviceGatewayRXInfo[0] = reorderedDeviceGatewayRXInfo[0]
+	ctx.DeviceGatewayRXInfo[0] = SelectedDeviceGatewayRXInfo
 
 	fmt.Println("  @@ Moddified order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 	return nil

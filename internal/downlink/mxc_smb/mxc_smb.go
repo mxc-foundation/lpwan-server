@@ -79,36 +79,36 @@ func m2mApiDlPktSent() error {
 // DeviceGatewayRXInfo[0] to a gateway of organization (if possible).
 // Otherwise another available gateway (in case of DeviceMode == WHOLE_NETWORK_USAGE)
 // otherwise nil
-func ReorderGateways(devEui lorawan.EUI64, deviceGatewayRXInfo []storage.DeviceGatewayRXInfo) (reorderedDeviceGatewayRXInfo []storage.DeviceGatewayRXInfo, err error) {
+func SelectSenderGateway(devEui lorawan.EUI64, deviceGatewayRXInfo []storage.DeviceGatewayRXInfo) (reorderedDeviceGatewayRXInfo storage.DeviceGatewayRXInfo, err error) {
 	dvUsageModeRes, err := m2mApiDvUsageMode(fmt.Sprintf("%s", devEui))
 	if err != nil {
-		return deviceGatewayRXInfo, err
+		return storage.DeviceGatewayRXInfo{}, err
 	}
 
 	fmt.Println("@@ dvUsageModeRes of devEui: ", fmt.Sprintf("%s", devEui), "    API return: ", dvUsageModeRes) //@@
 
-	reorderedDeviceGatewayRXInfo = append(reorderedDeviceGatewayRXInfo, storage.DeviceGatewayRXInfo{})
+	reorderedDeviceGatewayRXInfo = storage.DeviceGatewayRXInfo{}
 
-	switch dvUsageModeRes.DvMode {
-	case "INACTIVE":
-	case "DELETED":
-	case "FREE_GATEWAYS_LIMITED":
+	switch {
+	case dvUsageModeRes.DvMode == "INACTIVE" || dvUsageModeRes.DvMode == "DELETED":
+		//nothing
+	case dvUsageModeRes.DvMode == "FREE_GATEWAYS_LIMITED" || dvUsageModeRes.DvMode == "WHOLE_NETWORK":
 		fmt.Println("step: FREE_GATEWAYS_LIMITED")
 
 		for _, rxInfo := range deviceGatewayRXInfo {
 			for _, freeGws := range dvUsageModeRes.FreeGwMac {
 				if fmt.Sprintf("%s", rxInfo.GatewayID) == (*freeGws).GwMac {
-					reorderedDeviceGatewayRXInfo[0] = rxInfo
+					reorderedDeviceGatewayRXInfo = rxInfo
 					break
 				}
 			}
-			if reorderedDeviceGatewayRXInfo[0].GatewayID != (storage.DeviceGatewayRXInfo{}).GatewayID {
+			if reorderedDeviceGatewayRXInfo.GatewayID != (storage.DeviceGatewayRXInfo{}).GatewayID {
 				break
 			}
 		}
-	case "WHOLE_NETWORK":
-		if reorderedDeviceGatewayRXInfo[0].GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
-			reorderedDeviceGatewayRXInfo[0] = deviceGatewayRXInfo[0]
+	case dvUsageModeRes.DvMode == "WHOLE_NETWORK":
+		if reorderedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+			reorderedDeviceGatewayRXInfo = deviceGatewayRXInfo[0]
 		}
 
 	}
