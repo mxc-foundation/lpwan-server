@@ -1,20 +1,18 @@
 package data
 
 import (
-	// m2m_api "api/m2m_server"
 	"context"
 	"encoding/binary"
 	"fmt"
 	"time"
 
 	"github.com/brocaar/loraserver/api/gw"
-	m2m_api "github.com/brocaar/loraserver/api/m2m_server"
 	"github.com/brocaar/loraserver/internal/adr"
 	"github.com/brocaar/loraserver/internal/backend/gateway"
-	"github.com/brocaar/loraserver/internal/backend/m2m_client"
 	"github.com/brocaar/loraserver/internal/band"
 	"github.com/brocaar/loraserver/internal/channels"
 	"github.com/brocaar/loraserver/internal/config"
+	"github.com/brocaar/loraserver/internal/downlink/mxc_smb"
 	"github.com/brocaar/loraserver/internal/framelog"
 	"github.com/brocaar/loraserver/internal/helpers"
 	"github.com/brocaar/loraserver/internal/logging"
@@ -114,7 +112,7 @@ var scheduleNextQueueItemTasks = []func(*dataContext) error{
 	getServiceProfile,
 	checkLastDownlinkTimestamp,
 	setDeviceGatewayRXInfo,
-	// @@ smbCall()
+	smbReorderGateways,
 	forClass(storage.DeviceModeC,
 		setImmediately,
 		setTXInfoForRX2,
@@ -132,6 +130,7 @@ var scheduleNextQueueItemTasks = []func(*dataContext) error{
 	setPHYPayloads,
 	sendDownlinkFrame,
 	saveDeviceSession,
+	//@@savePaymetnConts
 }
 
 // Setup configures the package.
@@ -277,7 +276,7 @@ func HandleResponse(ctx context.Context, rxPacket models.RXPacket, sp storage.Se
 
 	for _, t := range responseTasks {
 		if err := t(&rctx); err != nil {
-			if err == ErrAbort {
+			if err == ErrAbort || err == ErrSmbMxcNotPermittedToSendDl {
 				return nil
 			}
 
@@ -412,59 +411,27 @@ func setTXParameters(ctx *dataContext) error {
 
 // reorder gateways based on SMB of MXProtcol
 func smbReorderGateways(ctx *dataContext) error {
-	fmt.Println("  @@ data.go/smbReorderGateways - primary ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 
-	if len(ctx.DeviceGatewayRXInfo) > 0 {
-		fmt.Println("  @@ data.go/smbReorderGateways - ctx.DeviceGatewayRXInfo[0].GatewayID: ", ctx.DeviceGatewayRXInfo[0].GatewayID, "ctx.DeviceSession.DevEUI: ", ctx.DeviceSession.DevEUI) //@@
+	fmt.Println("  @@ Primary order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+
+	// ctx.DeviceSession.DevEUI
+
+	reorderedDeviceGatewayRXInfo, err := mxc_smb.ReorderGateways(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
+	if err != nil {
+		fmt.Println("error reorder ", err) //@@
+		return err
 	}
 
-	fmt.Println("  @@ data.go/smbReorderGateways - moddified ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+	if reorderedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+		fmt.Println(ErrSmbMxcNotPermittedToSendDl) // log
+		return ErrSmbMxcNotPermittedToSendDl
+	}
+
+	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
+	ctx.DeviceGatewayRXInfo[0] = reorderedDeviceGatewayRXInfo[0]
+
+	fmt.Println("  @@ Moddified ordre ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 	return nil
-}
-
-func testM2MApi() {
-
-	fmt.Println("@@++++++++++++++++/ testing M2M API begin")
-
-	// add this device to m2m server
-	// m2mClient, err := m2m_client.GetPool().Get(config.C.M2MServer.M2MServer, []byte(config.C.M2MServer.CACert),
-	// 	[]byte(config.C.M2MServer.TLSCert), []byte(config.C.M2MServer.TLSKey))
-	// if err != nil {
-	// 	return errors.Wrap(err, "get m2m-server client error")
-	// }
-
-	fmt.Println("@@-1")
-	m2mClient, err := m2m_client.GetPool().Get("mxprotocol-server:4000", []byte{}, []byte{}, []byte{})
-	// m2mClient, err := m2m_client.GetPool().Get("mxprotocol-server:4000", "", "", "")
-	fmt.Println("@@-2")
-	if err != nil {
-		fmt.Println("@@-3")
-		fmt.Println(errors.Wrap(err, "get m2m-server client error"))
-		return
-	}
-	fmt.Println("@@-4")
-	// _, err = m2mClient.AddDeviceInM2MServer(context.Background(), &m2m_api.AddDeviceInM2MServerRequest{
-	// 	OrgId: app.OrganizationID,
-	// 	DevProfile: &m2m_api.AppServerDeviceProfile{
-	// 		DevEui:        d.DevEUI.String(),
-	// 		ApplicationId: d.ApplicationID,
-	// 		Name:          d.Name,
-	// 	},
-	// })
-
-	_, err = m2mClient.DvUsageMode(context.Background(), &m2m_api.DvUsageModeRequest{
-		DvEui: "the dv_eui",
-	})
-	fmt.Println("@@-5")
-	if err != nil {
-		fmt.Println("@@-6")
-		log.WithError(err).Error("m2m server create device api error")
-		// return handleGrpcError(err, "create device error")
-		fmt.Println(err, "create device error")
-		return
-	}
-
-	fmt.Println("@@++++++++++++++++ testing M2M API end")
 }
 
 func setDataTXInfo(ctx *dataContext) error {
@@ -486,8 +453,6 @@ func setDataTXInfo(ctx *dataContext) error {
 func setTXInfoForRX1(ctx *dataContext) error {
 
 	fmt.Println("@@ data.go/setTXInfoForRX1 - ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
-
-	testM2MApi() //@@
 
 	rxInfo := ctx.DeviceGatewayRXInfo[0]
 
