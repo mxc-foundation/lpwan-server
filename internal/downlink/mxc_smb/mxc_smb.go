@@ -41,7 +41,7 @@ func m2mApiDvUsageMode(devEui string) (m2m_api.DvUsageModeResponse, error) {
 	return *response, nil
 }
 
-func m2mApiDlPktSent() error {
+func M2mApiDlPktSent(dlPkt m2m_api.DlPkt) error {
 
 	fmt.Println("@@ Calling M2M API DlPktSent begin")
 
@@ -54,18 +54,19 @@ func m2mApiDlPktSent() error {
 		return err1
 	}
 
+	// dlPktTest := m2m_api.DlPkt{
+	// 	DlIdNs:   2,
+	// 	GwMac:    "alkdjs",
+	// 	DevEui:   "67",
+	// 	Token:    "1231",
+	// 	CreateAt: "--time--",
+	// 	Nonce:    123,
+	// 	Size:     2.1,
+	// 	Category: "downlink-cat",
+	// }
+
 	_, err := m2mClient.DlPktSent(context.Background(), &m2m_api.DlPktSentRequest{
-		DlPkt: &m2m_api.DlPkt{
-			DlIdNs:   2,
-			GwMac:    "alkdjs",
-			DevEui:   "67",
-			Token:    "1231",
-			CreateAt: "--time--",
-			Nonce:    123,
-			Size:     2.1,
-			Category: "downlink-cat",
-		},
-	})
+		DlPkt: &dlPkt})
 	if err != nil {
 		log.WithError(err).Error("m2m server DlPktSent api error")
 		fmt.Println(err, "@@DlPktSent error") //@@

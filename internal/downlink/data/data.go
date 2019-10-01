@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/brocaar/loraserver/api/gw"
+	m2m_api "github.com/brocaar/loraserver/api/m2m_server"
 	"github.com/brocaar/loraserver/internal/adr"
 	"github.com/brocaar/loraserver/internal/backend/gateway"
 	"github.com/brocaar/loraserver/internal/band"
@@ -104,7 +105,7 @@ var responseTasks = []func(*dataContext) error{
 	sendDownlinkFrame,
 	saveDeviceSession,
 	saveRemainingFrames,
-	//@@savePaymetnConts
+	smbDlSent,
 }
 
 var scheduleNextQueueItemTasks = []func(*dataContext) error{
@@ -130,7 +131,7 @@ var scheduleNextQueueItemTasks = []func(*dataContext) error{
 	setPHYPayloads,
 	sendDownlinkFrame,
 	saveDeviceSession,
-	//@@savePaymetnConts
+	smbDlSent,
 }
 
 // Setup configures the package.
@@ -1180,4 +1181,30 @@ func saveRemainingFrames(ctx *dataContext) error {
 // with the actual device-session.
 func returnInvalidDeviceClassError(ctx *dataContext) error {
 	return errors.New("the device is in an invalid device-class for this action")
+}
+
+func smbDlSent(ctx *dataContext) error {
+	fmt.Println("ctx.DownlinkFrames[0].DownlinkFrame.Token: ", ctx.DownlinkFrames[0].DownlinkFrame.Token)
+	fmt.Println("ctx.DownlinkFrames[1].DownlinkFrame.Token: ", ctx.DownlinkFrames[1].DownlinkFrame.Token)
+	fmt.Println("ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId: ", ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId)
+	fmt.Println("ctx.DownlinkFrames[1].DownlinkFrame.DownlinkId: ", ctx.DownlinkFrames[1].DownlinkFrame.DownlinkId)
+	fmt.Println("ctx.DownlinkFrames: ", ctx.DownlinkFrames)
+
+	dlPkt := m2m_api.DlPkt{
+		DlIdNs:   int64(binary.BigEndian.Uint64(ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId)), //int64(fmt.Sprintf("%d", ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId)),
+		GwMac:    fmt.Sprintf("%s", ctx.DeviceGatewayRXInfo[0].GatewayID),
+		DevEui:   fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
+		Token:    fmt.Sprintf("%s", int64(ctx.DownlinkFrames[0].DownlinkFrame.Token)),
+		CreateAt: time.Now().String(),
+		Nonce:    0,
+		Size:     float64(ctx.DownlinkFrames[0].RemainingPayloadSize),
+		Category: "PAYLOAD",
+	}
+
+	mxc_smb.M2mApiDlPktSent(dlPkt)
+
+	fmt.Println("DlPkt: ", dlPkt)
+
+	return nil
+
 }
