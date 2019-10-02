@@ -5,8 +5,11 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/brocaar/loraserver/api/gw"
+	m2m_api "github.com/brocaar/loraserver/api/m2m_server"
 	"github.com/brocaar/loraserver/internal/backend/gateway"
 	"github.com/brocaar/loraserver/internal/band"
 	"github.com/brocaar/loraserver/internal/config"
@@ -36,6 +39,7 @@ var tasks = []func(*joinContext) error{
 	setDownlinkFrame,
 	sendJoinAcceptResponse,
 	saveRemainingFrames,
+	smbDlSent,
 }
 
 type joinContext struct {
@@ -294,6 +298,26 @@ func saveRemainingFrames(ctx *joinContext) error {
 	if err := storage.SaveDownlinkFrames(ctx.ctx, storage.RedisPool(), ctx.DeviceSession.DevEUI, ctx.DownlinkFrames[1:]); err != nil {
 		return errors.Wrap(err, "save downlink-frames error")
 	}
+
+	return nil
+}
+
+func smbDlSent(ctx *joinContext) error {
+	dlPkt := m2m_api.DlPkt{
+		DlIdNs:      strconv.FormatUint(binary.BigEndian.Uint64(ctx.DownlinkFrames[0].DownlinkId), 10),
+		GwMac:       fmt.Sprintf("%s", ctx.DeviceGatewayRXInfo[0].GatewayID),
+		DevEui:      fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
+		TokenDlFrm1: int64(ctx.Token),
+		TokenDlFrm2: int64(ctx.DownlinkFrames[0].Token), //@@ checked
+		CreateAt:    time.Now().String(),
+		Nonce:       0,
+		Size:        0, // will modify for next phases
+		Category:    m2m_api.Category_JOIN_ANS,
+	}
+
+	mxc_smb.M2mApiDlPktSent(dlPkt)
+
+	fmt.Println("@@ JOIN REQ  DlPkt sent to M2M wallet: ", dlPkt) //@@
 
 	return nil
 }
