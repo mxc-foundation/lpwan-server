@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/binary"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/brocaar/loraserver/api/gw"
@@ -1184,26 +1185,22 @@ func returnInvalidDeviceClassError(ctx *dataContext) error {
 }
 
 func smbDlSent(ctx *dataContext) error {
-	fmt.Println("ctx.DownlinkFrames[0].DownlinkFrame.Token: ", ctx.DownlinkFrames[0].DownlinkFrame.Token)
-	fmt.Println("ctx.DownlinkFrames[1].DownlinkFrame.Token: ", ctx.DownlinkFrames[1].DownlinkFrame.Token)
-	fmt.Println("ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId: ", ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId)
-	fmt.Println("ctx.DownlinkFrames[1].DownlinkFrame.DownlinkId: ", ctx.DownlinkFrames[1].DownlinkFrame.DownlinkId)
-	fmt.Println("ctx.DownlinkFrames: ", ctx.DownlinkFrames)
 
 	dlPkt := m2m_api.DlPkt{
-		DlIdNs:   int64(binary.BigEndian.Uint64(ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId)), //int64(fmt.Sprintf("%d", ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId)),
-		GwMac:    fmt.Sprintf("%s", ctx.DeviceGatewayRXInfo[0].GatewayID),
-		DevEui:   fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
-		Token:    fmt.Sprintf("%s", int64(ctx.DownlinkFrames[0].DownlinkFrame.Token)),
-		CreateAt: time.Now().String(),
-		Nonce:    0,
-		Size:     float64(ctx.DownlinkFrames[0].RemainingPayloadSize),
-		Category: "PAYLOAD",
+		DlIdNs:      strconv.FormatUint(binary.BigEndian.Uint64(ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId), 10),
+		GwMac:       fmt.Sprintf("%s", ctx.DeviceGatewayRXInfo[0].GatewayID),
+		DevEui:      fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
+		TokenDlFrm1: int64(ctx.DownlinkFrames[0].DownlinkFrame.Token),
+		TokenDlFrm2: int64(ctx.DownlinkFrames[1].DownlinkFrame.Token),
+		CreateAt:    time.Now().String(),
+		Nonce:       0,
+		Size:        float64(ctx.DownlinkFrames[0].RemainingPayloadSize), // to be checked
+		Category:    m2m_api.Category_PAYLOAD,
 	}
 
 	mxc_smb.M2mApiDlPktSent(dlPkt)
 
-	fmt.Println("DlPkt: ", dlPkt)
+	fmt.Println("@@ DlPkt sent to M2M wallet: ", dlPkt) //@@
 
 	return nil
 
