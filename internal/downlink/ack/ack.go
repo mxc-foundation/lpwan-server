@@ -51,12 +51,13 @@ func HandleDownlinkTXAck(ctx context.Context, downlinkTXAck gw.DownlinkTXAck) er
 	return nil
 }
 
+// to be done: next phase
 // func smbPacketPayment(ctx *ackContext) error {
 // 	if ctx.DownlinkTXAck.Error != "" {
 // 		return nil
 // 	}
 // 	// retrieve ctx based on Token -
-// 	fmt.Println("  @@ ack.go/abortOnNoError - Downlink is sent successfully- ctx: ", ctx) //@@
+// 	fmt.Println("ack.go/abortOnNoError - Downlink is sent successfully- ctx: ", ctx) 
 
 // 	// Not all of the gateways support this ack
 // 	// Event after getting the ack there is no guarantee that the downlink is sent

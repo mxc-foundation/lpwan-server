@@ -555,7 +555,6 @@ func DeleteDeviceGatewayRXInfoSet(ctx context.Context, p *redis.Pool, devEUI lor
 // GetDeviceGatewayRXInfoSet returns the DeviceGatewayRXInfoSet for the given
 // Device EUI.
 func GetDeviceGatewayRXInfoSet(ctx context.Context, p *redis.Pool, devEUI lorawan.EUI64) (DeviceGatewayRXInfoSet, error) {
-	fmt.Println("  @@ device_session.go/GetDeviceGatewayRXInfoSet - ctx: ", ctx) //@@
 
 	var rxInfoSetPB DeviceGatewayRXInfoSetPB
 
@@ -575,7 +574,6 @@ func GetDeviceGatewayRXInfoSet(ctx context.Context, p *redis.Pool, devEUI lorawa
 		return DeviceGatewayRXInfoSet{}, errors.Wrap(err, "protobuf unmarshal error")
 	}
 
-	fmt.Println("  @@ device_session.go/GetDeviceGatewayRXInfoSet - ctx.rxInfoSetPB: ", rxInfoSetPB) //@@
 	return deviceGatewayRXInfoSetFromPB(rxInfoSetPB), nil
 }
 

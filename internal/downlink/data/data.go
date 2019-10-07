@@ -414,18 +414,20 @@ func setTXParameters(ctx *dataContext) error {
 // Reorder the gateways (ctx.DeviceGatewayRXInfo) based on SMB of MXProtcol for sending the downlink
 func smbReorderGateways(ctx *dataContext) error {
 
-	fmt.Println("  @@ Primary order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
-
-	// ctx.DeviceSession.DevEUI
+	log.WithFields(log.Fields{
+		"ctx.DeviceGatewayRXInfo:": ctx.DeviceGatewayRXInfo,
+	}).Info("data/smbReorderGateways: Gateways primary order")
 
 	SelectedDeviceGatewayRXInfo, err := mxc_smb.SelectSenderGateway(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
 	if err != nil {
-		fmt.Println("error reorder ", err) //@@
+		log.Info("data/smbReorderGateways:error reorder ", err)
 		return err
 	}
 
 	if SelectedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
-		fmt.Println(ErrSmbMxcNotPermittedToSendDl) // log
+		log.WithFields(log.Fields{
+			"devEui:": ctx.DeviceSession.DevEUI,
+		}).Info("data/smbReorderGateways: ErrSmbMxcNotPermittedToSendDl")
 		return ErrSmbMxcNotPermittedToSendDl
 	}
 
@@ -433,7 +435,9 @@ func smbReorderGateways(ctx *dataContext) error {
 	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
 	ctx.DeviceGatewayRXInfo[0] = SelectedDeviceGatewayRXInfo
 
-	fmt.Println("  @@ Moddified order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+	log.WithFields(log.Fields{
+		"ctx.DeviceGatewayRXInfo:": ctx.DeviceGatewayRXInfo,
+	}).Info("data/smbReorderGateways: Gateways modified order")
 	return nil
 }
 
@@ -454,8 +458,6 @@ func setDataTXInfo(ctx *dataContext) error {
 }
 
 func setTXInfoForRX1(ctx *dataContext) error {
-
-	fmt.Println("@@ data.go/setTXInfoForRX1 - ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
 
 	rxInfo := ctx.DeviceGatewayRXInfo[0]
 
@@ -1194,13 +1196,15 @@ func smbDlSent(ctx *dataContext) error {
 		TokenDlFrm2: int64(ctx.DownlinkFrames[1].DownlinkFrame.Token),
 		CreateAt:    time.Now().String(),
 		Nonce:       0,
-		Size:        float64(ctx.DownlinkFrames[0].RemainingPayloadSize), // to be checked
+		Size:        float64(ctx.DownlinkFrames[0].RemainingPayloadSize), // to be checked (for next phases)
 		Category:    m2m_api.Category_PAYLOAD,
 	}
 
 	mxc_smb.M2mApiDlPktSent(dlPkt)
 
-	fmt.Println("@@ DlPkt sent to M2M wallet: ", dlPkt) //@@
+	log.WithFields(log.Fields{
+		"dlPkt": dlPkt,
+	}).Info("data/smbDlSent: DlPkt sent to M2M wallet")
 
 	return nil
 

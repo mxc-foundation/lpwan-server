@@ -107,18 +107,23 @@ func setDeviceGatewayRXInfo(ctx *joinContext) error {
 
 // reorder gateways based on SMB of MXProtcol
 func smbReorderGateways(ctx *joinContext) error {
-	fmt.Println("  @@  JOIN Req  Primary order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+
+	log.WithFields(log.Fields{
+		"ctx.DeviceGatewayRXInfo:": ctx.DeviceGatewayRXInfo,
+	}).Info("join/smbReorderGateways: Gateways primary order")
 
 	// ctx.DeviceSession.DevEUI
 
 	SelectedDeviceGatewayRXInfo, err := mxc_smb.SelectSenderGateway(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
 	if err != nil {
-		fmt.Println("error reorder ", err) //@@
+		log.Info("join/smbReorderGateways:error reorder ", err)
 		return err
 	}
 
 	if SelectedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
-		fmt.Println("no permission to send downlink join response from SMB of MXC") // log
+		log.WithFields(log.Fields{
+			"devEui:": ctx.DeviceSession.DevEUI,
+		}).Info("join/smbReorderGateways: ErrSmbMxcNotPermittedToSendJoinAns")
 		return errors.New("no permission to send downlink join response from SMB of MXC")
 	}
 
@@ -126,7 +131,9 @@ func smbReorderGateways(ctx *joinContext) error {
 	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
 	ctx.DeviceGatewayRXInfo[0] = SelectedDeviceGatewayRXInfo
 
-	fmt.Println("  @@ JOIN REQ Moddified order ctx.DeviceGatewayRXInfo: ", ctx.DeviceGatewayRXInfo) //@@
+	log.WithFields(log.Fields{
+		"ctx.DeviceGatewayRXInfo:": ctx.DeviceGatewayRXInfo,
+	}).Info("join/smbReorderGateways: Gateways modified order")
 	return nil
 }
 
@@ -307,17 +314,19 @@ func smbDlSent(ctx *joinContext) error {
 		DlIdNs:      strconv.FormatUint(binary.BigEndian.Uint64(ctx.DownlinkFrames[0].DownlinkId), 10),
 		GwMac:       fmt.Sprintf("%s", ctx.DeviceGatewayRXInfo[0].GatewayID),
 		DevEui:      fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
-		TokenDlFrm1: int64(ctx.Token),
-		TokenDlFrm2: int64(ctx.DownlinkFrames[0].Token), //@@ checked
+		TokenDlFrm1: int64(ctx.DownlinkFrames[0].Token),
+		TokenDlFrm2: int64(ctx.DownlinkFrames[1].Token),
 		CreateAt:    time.Now().String(),
 		Nonce:       0,
-		Size:        0, // will modify for next phases
+		Size:        0, // will modify for the next phase
 		Category:    m2m_api.Category_JOIN_ANS,
 	}
 
 	mxc_smb.M2mApiDlPktSent(dlPkt)
 
-	fmt.Println("@@ JOIN REQ  DlPkt sent to M2M wallet: ", dlPkt) //@@
+	log.WithFields(log.Fields{
+		"dlPkt": dlPkt,
+	}).Info("join/smbDlSent: join DlPkt sent to M2M wallet")
 
 	return nil
 }

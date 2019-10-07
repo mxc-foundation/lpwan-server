@@ -132,7 +132,7 @@ func (p *pool) createClient(hostname string, caCert, tlsCert, tlsKey []byte) (*g
 
 	devServiceClient, err := grpc.DialContext(ctx, hostname, nsOpts...)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "dial m2m-server device service api error")
+		return nil, nil, errors.Wrap(err, "Dial m2m-server device service api error")
 	}
 
 	return devServiceClient, m2m.NewM2MServerServiceClient(devServiceClient), nil

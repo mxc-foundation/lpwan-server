@@ -17,20 +17,18 @@ func m2mApiDvUsageMode(devEui string) (m2m_api.DvUsageModeResponse, error) {
 	// m2mClient, err := m2m_client.GetPool().Get(config.C.M2MServer.M2MServer, []byte(config.C.M2MServer.CACert),
 	// 	[]byte(config.C.M2MServer.TLSCert), []byte(config.C.M2MServer.TLSKey))
 
-	m2mClient, err1 := m2m_client.GetPool().Get("mxprotocol-server:4000", []byte{}, []byte{}, []byte{}) // to be changed: get from config file
-	if err1 != nil {
-		fmt.Println(errors.Wrap(err1, "get m2m-server client error"))
-		return m2m_api.DvUsageModeResponse{}, err1
+	m2mClient, err := m2m_client.GetPool().Get("mxprotocol-server:4000", []byte{}, []byte{}, []byte{}) // @@ to be changed: get from config file
+	if err != nil {
+		log.WithError(err).Error("get m2m-server client error m2mApiDvUsageMode")
+		return m2m_api.DvUsageModeResponse{}, err
 	}
 
 	response, err := m2mClient.DvUsageMode(context.Background(), &m2m_api.DvUsageModeRequest{
 		DvEui: devEui,
 	})
 	if err != nil {
-		log.WithError(err).Error("m2m server DvUsageModeResponse error") //@@
-		fmt.Println("@@create DvUsageModeResponse", err)                 //@@
-		// return handleGrpcError(err, "create device error")
-		return m2m_api.DvUsageModeResponse{}, errors.Wrap(err, "DvUsageModeResponse error") //@@
+		log.WithError(err).Error("m2m server API call DvUsageModeResponse error")
+		return m2m_api.DvUsageModeResponse{}, errors.Wrap(err, "m2m server API call DvUsageModeResponse error")
 
 	}
 
@@ -42,35 +40,36 @@ func M2mApiDlPktSent(dlPkt m2m_api.DlPkt) error {
 	// m2mClient, err := m2m_client.GetPool().Get(config.C.M2MServer.M2MServer, []byte(config.C.M2MServer.CACert),
 	// 	[]byte(config.C.M2MServer.TLSCert), []byte(config.C.M2MServer.TLSKey))
 
-	m2mClient, err1 := m2m_client.GetPool().Get("mxprotocol-server:4000", []byte{}, []byte{}, []byte{}) // to be changed: get from config file
-	if err1 != nil {
-		log.WithError(err1).Error("get m2m-server API client error")
-		fmt.Println(errors.Wrap(err1, "get m2m-server API client error")) //@@
-		return err1
+	m2mClient, err := m2m_client.GetPool().Get("mxprotocol-server:4000", []byte{}, []byte{}, []byte{}) // @@ to be changed: get from config file
+	if err != nil {
+		log.WithError(err).Error("get m2m-server API client error M2mApiDlPktSent")
+		return err
 	}
 
-	_, err := m2mClient.DlPktSent(context.Background(), &m2m_api.DlPktSentRequest{
+	_, err = m2mClient.DlPktSent(context.Background(), &m2m_api.DlPktSentRequest{
 		DlPkt: &dlPkt})
 	if err != nil {
-		log.WithError(err).Error("m2m server DlPktSent api error")
-		fmt.Println(err, "@@DSlPktSent error") //@@
-		// return handleGrpcError(err, "create device error")
-		return errors.Wrap(err, "DlPktSent error")
+		log.WithError(err).Error("m2m server DlPktSent api error. DlPkt.DlIdNs: ", dlPkt.DlIdNs)
+		return errors.Wrap(err, "m2m server DlPktSent api error. DlPkt")
 
 	}
 	return nil
 }
 
-// DeviceGatewayRXInfo[0] to a gateway of organization (if possible).
-// Otherwise another available gateway (in case of DeviceMode == WHOLE_NETWORK_USAGE)
-// otherwise nil
+// Select which gateway should send the downlink packet (will put in  reorderedDeviceGatewayRXInfo)
+// A gateway from the Free gateways for the device (dvUsageModeRes.FreeGwMac) will be used preferebly
+// If there is no free gateway in the list of gateways receive the uplink (deviceGatewayRXInfo), ...
+// ... and the device is enable and willing to pay, a gateway from another org will be able to send the downlink
 func SelectSenderGateway(devEui lorawan.EUI64, deviceGatewayRXInfo []storage.DeviceGatewayRXInfo) (reorderedDeviceGatewayRXInfo storage.DeviceGatewayRXInfo, err error) {
 	dvUsageModeRes, err := m2mApiDvUsageMode(fmt.Sprintf("%s", devEui))
 	if err != nil {
 		return storage.DeviceGatewayRXInfo{}, err
 	}
 
-	fmt.Println("@@ dvUsageModeRes of devEui: ", fmt.Sprintf("%s", devEui), "    API return: ", dvUsageModeRes) //@@
+	log.WithFields(log.Fields{
+		"devEui":         devEui,
+		"dvUsageModeRes": dvUsageModeRes,
+	}).Info("mxc_smb/selectSenderGateway: API response dvUsageModeRes")
 
 	reorderedDeviceGatewayRXInfo = storage.DeviceGatewayRXInfo{}
 
