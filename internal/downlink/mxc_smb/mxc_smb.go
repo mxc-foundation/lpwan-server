@@ -76,9 +76,8 @@ func SelectSenderGateway(devEui lorawan.EUI64, deviceGatewayRXInfo []storage.Dev
 
 	switch {
 	case dvUsageModeRes.DvMode == m2m_api.DeviceMode_DV_INACTIVE || dvUsageModeRes.DvMode == m2m_api.DeviceMode_DV_DELETED:
-		//nothing
+		break
 	case dvUsageModeRes.DvMode == m2m_api.DeviceMode_DV_FREE_GATEWAYS_LIMITED || dvUsageModeRes.DvMode == m2m_api.DeviceMode_DV_WHOLE_NETWORK:
-		fmt.Println("step: FREE_GATEWAYS_LIMITED")
 
 		for _, rxInfo := range deviceGatewayRXInfo {
 			for _, freeGws := range dvUsageModeRes.FreeGwMac {
@@ -91,9 +90,11 @@ func SelectSenderGateway(devEui lorawan.EUI64, deviceGatewayRXInfo []storage.Dev
 				break
 			}
 		}
-	case dvUsageModeRes.DvMode == m2m_api.DeviceMode_DV_WHOLE_NETWORK && dvUsageModeRes.EnoughBalance:
-		if reorderedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
-			reorderedDeviceGatewayRXInfo = deviceGatewayRXInfo[0]
+
+		if dvUsageModeRes.DvMode == m2m_api.DeviceMode_DV_WHOLE_NETWORK && dvUsageModeRes.EnoughBalance {
+			if reorderedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+				reorderedDeviceGatewayRXInfo = deviceGatewayRXInfo[0]
+			}
 		}
 
 	}
