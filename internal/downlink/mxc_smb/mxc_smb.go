@@ -6,6 +6,7 @@ import (
 
 	m2m_api "github.com/brocaar/loraserver/api/m2m_server"
 	"github.com/brocaar/loraserver/internal/backend/m2m_client"
+	"github.com/brocaar/loraserver/internal/config"
 	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
 	"github.com/pkg/errors"
@@ -14,10 +15,8 @@ import (
 
 func m2mApiDvUsageMode(devEui string) (m2m_api.DvUsageModeResponse, error) {
 
-	// m2mClient, err := m2m_client.GetPool().Get(config.C.M2MServer.M2MServer, []byte(config.C.M2MServer.CACert),
-	// 	[]byte(config.C.M2MServer.TLSCert), []byte(config.C.M2MServer.TLSKey))
-
-	m2mClient, err := m2m_client.GetPool().Get("mxprotocol-server:4000", []byte{}, []byte{}, []byte{}) // @@ to be changed: get from config file
+	m2mClient, err := m2m_client.GetPool().Get(config.C.M2MServer.M2MServer, []byte(config.C.M2MServer.CACert),
+		[]byte(config.C.M2MServer.TLSCert), []byte(config.C.M2MServer.TLSKey))
 	if err != nil {
 		log.WithError(err).Error("get m2m-server client error m2mApiDvUsageMode")
 		return m2m_api.DvUsageModeResponse{}, err
@@ -37,10 +36,8 @@ func m2mApiDvUsageMode(devEui string) (m2m_api.DvUsageModeResponse, error) {
 
 func M2mApiDlPktSent(dlPkt m2m_api.DlPkt) error {
 
-	// m2mClient, err := m2m_client.GetPool().Get(config.C.M2MServer.M2MServer, []byte(config.C.M2MServer.CACert),
-	// 	[]byte(config.C.M2MServer.TLSCert), []byte(config.C.M2MServer.TLSKey))
-
-	m2mClient, err := m2m_client.GetPool().Get("mxprotocol-server:4000", []byte{}, []byte{}, []byte{}) // @@ to be changed: get from config file
+	m2mClient, err := m2m_client.GetPool().Get(config.C.M2MServer.M2MServer, []byte(config.C.M2MServer.CACert),
+		[]byte(config.C.M2MServer.TLSCert), []byte(config.C.M2MServer.TLSKey))
 	if err != nil {
 		log.WithError(err).Error("get m2m-server API client error M2mApiDlPktSent")
 		return err
