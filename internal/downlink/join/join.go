@@ -316,7 +316,7 @@ func smbDlSent(ctx *joinContext) error {
 		DevEui:      fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
 		TokenDlFrm1: int64(ctx.DownlinkFrames[0].Token),
 		TokenDlFrm2: int64(ctx.DownlinkFrames[1].Token),
-		CreateAt:    time.Now().String(),
+		CreateAt:    time.Now().UTC().String(),
 		Nonce:       0,
 		Size:        0, // will modify for the next phase
 		Category:    m2m_api.Category_JOIN_ANS,
