@@ -4,22 +4,26 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/binary"
-
-	"github.com/gofrs/uuid"
-	"github.com/golang/protobuf/ptypes"
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
+	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/brocaar/loraserver/api/gw"
+	m2m_api "github.com/brocaar/loraserver/api/m2m_server"
 	"github.com/brocaar/loraserver/internal/backend/gateway"
 	"github.com/brocaar/loraserver/internal/band"
 	"github.com/brocaar/loraserver/internal/config"
+	"github.com/brocaar/loraserver/internal/downlink/mxc_smb"
 	"github.com/brocaar/loraserver/internal/framelog"
 	"github.com/brocaar/loraserver/internal/helpers"
 	"github.com/brocaar/loraserver/internal/logging"
 	"github.com/brocaar/loraserver/internal/models"
 	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
+	"github.com/gofrs/uuid"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -29,11 +33,13 @@ var (
 
 var tasks = []func(*joinContext) error{
 	setDeviceGatewayRXInfo,
+	smbReorderGateways,
 	setTXInfo,
 	setToken,
 	setDownlinkFrame,
 	sendJoinAcceptResponse,
 	saveRemainingFrames,
+	smbDlSent,
 }
 
 type joinContext struct {
@@ -96,6 +102,38 @@ func setDeviceGatewayRXInfo(ctx *joinContext) error {
 		return errors.New("DeviceGatewayRXInfo is empty!")
 	}
 
+	return nil
+}
+
+// reorder gateways based on SMB of MXProtcol
+func smbReorderGateways(ctx *joinContext) error {
+
+	log.WithFields(log.Fields{
+		"ctx.DeviceGatewayRXInfo:": ctx.DeviceGatewayRXInfo,
+	}).Info("join/smbReorderGateways: Gateways primary order")
+
+	// ctx.DeviceSession.DevEUI
+
+	SelectedDeviceGatewayRXInfo, err := mxc_smb.SelectSenderGateway(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
+	if err != nil {
+		log.Info("join/smbReorderGateways:error reorder ", err)
+		return err
+	}
+
+	if SelectedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+		log.WithFields(log.Fields{
+			"devEui:": ctx.DeviceSession.DevEUI,
+		}).Info("join/smbReorderGateways: ErrSmbMxcNotPermittedToSendJoinAns")
+		return errors.New("no permission to send downlink join response from SMB of MXC")
+	}
+
+	ctx.DeviceGatewayRXInfo = append(ctx.DeviceGatewayRXInfo, storage.DeviceGatewayRXInfo{})
+	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
+	ctx.DeviceGatewayRXInfo[0] = SelectedDeviceGatewayRXInfo
+
+	log.WithFields(log.Fields{
+		"ctx.DeviceGatewayRXInfo:": ctx.DeviceGatewayRXInfo,
+	}).Info("join/smbReorderGateways: Gateways modified order")
 	return nil
 }
 
@@ -267,6 +305,28 @@ func saveRemainingFrames(ctx *joinContext) error {
 	if err := storage.SaveDownlinkFrames(ctx.ctx, storage.RedisPool(), ctx.DeviceSession.DevEUI, ctx.DownlinkFrames[1:]); err != nil {
 		return errors.Wrap(err, "save downlink-frames error")
 	}
+
+	return nil
+}
+
+func smbDlSent(ctx *joinContext) error {
+	dlPkt := m2m_api.DlPkt{
+		DlIdNs:      strconv.FormatUint(binary.BigEndian.Uint64(ctx.DownlinkFrames[0].DownlinkId), 10),
+		GwMac:       fmt.Sprintf("%s", ctx.DeviceGatewayRXInfo[0].GatewayID),
+		DevEui:      fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
+		TokenDlFrm1: int64(ctx.DownlinkFrames[0].Token),
+		TokenDlFrm2: int64(ctx.DownlinkFrames[1].Token),
+		CreateAt:    time.Now().String(),
+		Nonce:       0,
+		Size:        0, // will modify for the next phase
+		Category:    m2m_api.Category_JOIN_ANS,
+	}
+
+	mxc_smb.M2mApiDlPktSent(dlPkt)
+
+	log.WithFields(log.Fields{
+		"dlPkt": dlPkt,
+	}).Info("join/smbDlSent: join DlPkt sent to M2M wallet")
 
 	return nil
 }

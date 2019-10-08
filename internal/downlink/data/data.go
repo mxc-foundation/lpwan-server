@@ -3,19 +3,18 @@ package data
 import (
 	"context"
 	"encoding/binary"
+	"fmt"
+	"strconv"
 	"time"
 
-	"github.com/gofrs/uuid"
-	"github.com/golang/protobuf/ptypes"
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
-
 	"github.com/brocaar/loraserver/api/gw"
+	m2m_api "github.com/brocaar/loraserver/api/m2m_server"
 	"github.com/brocaar/loraserver/internal/adr"
 	"github.com/brocaar/loraserver/internal/backend/gateway"
 	"github.com/brocaar/loraserver/internal/band"
 	"github.com/brocaar/loraserver/internal/channels"
 	"github.com/brocaar/loraserver/internal/config"
+	"github.com/brocaar/loraserver/internal/downlink/mxc_smb"
 	"github.com/brocaar/loraserver/internal/framelog"
 	"github.com/brocaar/loraserver/internal/helpers"
 	"github.com/brocaar/loraserver/internal/logging"
@@ -24,6 +23,10 @@ import (
 	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
 	loraband "github.com/brocaar/lorawan/band"
+	"github.com/gofrs/uuid"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 const defaultCodeRate = "4/5"
@@ -93,6 +96,7 @@ var responseTasks = []func(*dataContext) error{
 	getDeviceProfile,
 	getServiceProfile,
 	setDeviceGatewayRXInfo,
+	smbReorderGateways,
 	setDataTXInfo,
 	setToken,
 	getNextDeviceQueueItem,
@@ -102,6 +106,7 @@ var responseTasks = []func(*dataContext) error{
 	sendDownlinkFrame,
 	saveDeviceSession,
 	saveRemainingFrames,
+	smbDlSent,
 }
 
 var scheduleNextQueueItemTasks = []func(*dataContext) error{
@@ -109,6 +114,7 @@ var scheduleNextQueueItemTasks = []func(*dataContext) error{
 	getServiceProfile,
 	checkLastDownlinkTimestamp,
 	setDeviceGatewayRXInfo,
+	smbReorderGateways,
 	forClass(storage.DeviceModeC,
 		setImmediately,
 		setTXInfoForRX2,
@@ -126,6 +132,7 @@ var scheduleNextQueueItemTasks = []func(*dataContext) error{
 	setPHYPayloads,
 	sendDownlinkFrame,
 	saveDeviceSession,
+	smbDlSent,
 }
 
 // Setup configures the package.
@@ -271,7 +278,7 @@ func HandleResponse(ctx context.Context, rxPacket models.RXPacket, sp storage.Se
 
 	for _, t := range responseTasks {
 		if err := t(&rctx); err != nil {
-			if err == ErrAbort {
+			if err == ErrAbort || err == ErrSmbMxcNotPermittedToSendDl {
 				return nil
 			}
 
@@ -404,6 +411,36 @@ func setTXParameters(ctx *dataContext) error {
 	return nil
 }
 
+// Reorder the gateways (ctx.DeviceGatewayRXInfo) based on SMB of MXProtcol for sending the downlink
+func smbReorderGateways(ctx *dataContext) error {
+
+	log.WithFields(log.Fields{
+		"ctx.DeviceGatewayRXInfo:": ctx.DeviceGatewayRXInfo,
+	}).Info("data/smbReorderGateways: Gateways primary order")
+
+	SelectedDeviceGatewayRXInfo, err := mxc_smb.SelectSenderGateway(ctx.DeviceSession.DevEUI, ctx.DeviceGatewayRXInfo)
+	if err != nil {
+		log.Info("data/smbReorderGateways:error reorder ", err)
+		return err
+	}
+
+	if SelectedDeviceGatewayRXInfo.GatewayID == (storage.DeviceGatewayRXInfo{}).GatewayID {
+		log.WithFields(log.Fields{
+			"devEui:": ctx.DeviceSession.DevEUI,
+		}).Info("data/smbReorderGateways: ErrSmbMxcNotPermittedToSendDl")
+		return ErrSmbMxcNotPermittedToSendDl
+	}
+
+	ctx.DeviceGatewayRXInfo = append(ctx.DeviceGatewayRXInfo, storage.DeviceGatewayRXInfo{})
+	copy(ctx.DeviceGatewayRXInfo[1:], ctx.DeviceGatewayRXInfo)
+	ctx.DeviceGatewayRXInfo[0] = SelectedDeviceGatewayRXInfo
+
+	log.WithFields(log.Fields{
+		"ctx.DeviceGatewayRXInfo:": ctx.DeviceGatewayRXInfo,
+	}).Info("data/smbReorderGateways: Gateways modified order")
+	return nil
+}
+
 func setDataTXInfo(ctx *dataContext) error {
 	if rxWindow == 0 || rxWindow == 1 {
 		if err := setTXInfoForRX1(ctx); err != nil {
@@ -421,6 +458,7 @@ func setDataTXInfo(ctx *dataContext) error {
 }
 
 func setTXInfoForRX1(ctx *dataContext) error {
+
 	rxInfo := ctx.DeviceGatewayRXInfo[0]
 
 	txInfo := gw.DownlinkTXInfo{
@@ -1114,7 +1152,7 @@ func checkLastDownlinkTimestamp(ctx *dataContext) error {
 			"time":                           time.Now(),
 			"last_downlink_tx_time":          ctx.DeviceSession.LastDownlinkTX,
 			"class_c_downlink_lock_duration": classCDownlinkLockDuration,
-			"ctx_id":                         ctx.ctx.Value(logging.ContextIDKey),
+			"ctx_id": ctx.ctx.Value(logging.ContextIDKey),
 		}).Debug("skip next downlink queue scheduling dueue to class-c downlink lock")
 		return ErrAbort
 	}
@@ -1146,4 +1184,28 @@ func saveRemainingFrames(ctx *dataContext) error {
 // with the actual device-session.
 func returnInvalidDeviceClassError(ctx *dataContext) error {
 	return errors.New("the device is in an invalid device-class for this action")
+}
+
+func smbDlSent(ctx *dataContext) error {
+
+	dlPkt := m2m_api.DlPkt{
+		DlIdNs:      strconv.FormatUint(binary.BigEndian.Uint64(ctx.DownlinkFrames[0].DownlinkFrame.DownlinkId), 10),
+		GwMac:       fmt.Sprintf("%s", ctx.DeviceGatewayRXInfo[0].GatewayID),
+		DevEui:      fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
+		TokenDlFrm1: int64(ctx.DownlinkFrames[0].DownlinkFrame.Token),
+		TokenDlFrm2: int64(ctx.DownlinkFrames[1].DownlinkFrame.Token),
+		CreateAt:    time.Now().String(),
+		Nonce:       0,
+		Size:        float64(ctx.DownlinkFrames[0].RemainingPayloadSize), // to be checked (for next phases)
+		Category:    m2m_api.Category_PAYLOAD,
+	}
+
+	mxc_smb.M2mApiDlPktSent(dlPkt)
+
+	log.WithFields(log.Fields{
+		"dlPkt": dlPkt,
+	}).Info("data/smbDlSent: DlPkt sent to M2M wallet")
+
+	return nil
+
 }

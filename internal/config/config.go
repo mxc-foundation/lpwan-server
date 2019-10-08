@@ -162,6 +162,13 @@ type Config struct {
 		} `mapstructure:"kek"`
 	} `mapstructure:"join_server"`
 
+	M2MServer struct {
+		M2MServer string `mapstructure:"m2m_server"`
+		CACert    string `mapstructure:"ca_cert"`
+		TLSCert   string `mapstructure:"tls_cert"`
+		TLSKey    string `mapstructure:"tls_key"`
+	} `mapstructure:"m2m_server"`
+
 	NetworkController struct {
 		Client nc.NetworkControllerServiceClient
 
