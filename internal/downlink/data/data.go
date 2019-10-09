@@ -1194,7 +1194,7 @@ func smbDlSent(ctx *dataContext) error {
 		DevEui:      fmt.Sprintf("%s", ctx.DeviceSession.DevEUI),
 		TokenDlFrm1: int64(ctx.DownlinkFrames[0].DownlinkFrame.Token),
 		TokenDlFrm2: int64(ctx.DownlinkFrames[1].DownlinkFrame.Token),
-		CreateAt:    time.Now().String(),
+		CreateAt:    time.Now().UTC().Format("2006-01-02T15:04:05.000000Z"), //time.Now().UTC().String(),
 		Nonce:       0,
 		Size:        float64(ctx.DownlinkFrames[0].RemainingPayloadSize), // to be checked (for next phases)
 		Category:    m2m_api.Category_PAYLOAD,
