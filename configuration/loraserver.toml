@@ -1,55 +1,14 @@
-# This configuration configures LoRa Server for the EU868 band using a MQTT
-# broker to communicate with the gateways. Many options and defaults have been
-# omitted for simplicity.
-# 
-# For other bands, see the ./examples/ sub-directory.
-#
 # See https://www.loraserver.io/loraserver/install/config/ for a full
 # configuration example and documentation.
-
-
-# PostgreSQL settings.
 #
-# Please note that PostgreSQL 9.5+ is required.
+# This file is for the EU868 band. See the examples/ folder for more
+# configuration examples.
+
 [postgresql]
-# PostgreSQL dsn (e.g.: postgres://user:password@hostname/database?sslmode=disable).
-#
-# Besides using an URL (e.g. 'postgres://user:password@hostname/database?sslmode=disable')
-# it is also possible to use the following format:
-# 'user=loraserver dbname=loraserver sslmode=disable'.
-#
-# The following connection parameters are supported:
-#
-# * dbname - The name of the database to connect to
-# * user - The user to sign in as
-# * password - The user's password
-# * host - The host to connect to. Values that start with / are for unix domain sockets. (default is localhost)
-# * port - The port to bind to. (default is 5432)
-# * sslmode - Whether or not to use SSL (default is require, this is not the default for libpq)
-# * fallback_application_name - An application_name to fall back to if one isn't provided.
-# * connect_timeout - Maximum wait for connection, in seconds. Zero or not specified means wait indefinitely.
-# * sslcert - Cert file location. The file must contain PEM encoded data.
-# * sslkey - Key file location. The file must contain PEM encoded data.
-# * sslrootcert - The location of the root certificate file. The file must contain PEM encoded data.
-#
-# Valid values for sslmode are:
-#
-# * disable - No SSL
-# * require - Always SSL (skip verification)
-# * verify-ca - Always SSL (verify that the certificate presented by the server was signed by a trusted CA)
-# * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
-dsn="postgres://localhost/loraserver_ns?sslmode=disable"
+dsn="postgres://loraserver_ns:loraserver_ns@postgresql/loraserver_ns?sslmode=disable"
 
-
-# Redis settings
-#
-# Please note that Redis 2.6.0+ is required.
 [redis]
-# Redis url (e.g. redis://user:password@hostname/0)
-#
-# For more information about the Redis URL format, see:
-# https://www.iana.org/assignments/uri-schemes/prov/redis
-url="redis://localhost:6379"
+url="redis://redis:6379"
 
 
 [m2m_server]
