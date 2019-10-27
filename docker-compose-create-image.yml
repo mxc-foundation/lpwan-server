@@ -1,0 +1,7 @@
+version: "2"
+services:
+  network-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
