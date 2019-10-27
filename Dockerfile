@@ -12,7 +12,7 @@ COPY . $PROJECT_PATH
 WORKDIR $PROJECT_PATH
 
 RUN make dev-requirements
-RUN make
+RUN make clean build
 
 FROM alpine:latest AS production
 
