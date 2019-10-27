@@ -17,8 +17,8 @@ RUN make clean build
 FROM alpine:latest AS production
 
 WORKDIR /root/
-RUN mkdir -p /etc/network-server
+RUN mkdir -p /etc/loraserver
 RUN apk --no-cache add ca-certificates tzdata
 COPY --from=development /network-server/build/ .
-COPY --from=development /network-server/configuration/ /etc/network-server
+COPY --from=development /network-server/configuration/ /etc/loraserver
 ENTRYPOINT ["./loraserver"]
