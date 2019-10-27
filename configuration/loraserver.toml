@@ -124,7 +124,7 @@ net_id="000000"
     command_topic_template="gateway/{{ .GatewayID }}/command/{{ .CommandType }}"
 
     # MQTT server (e.g. scheme://host:port where scheme is tcp, ssl or ws)
-    server="tcp://localhost:1883"
+    server="tcp://mosquitto:1883"
 
     # Connect with the given username (optional)
     username=""
@@ -154,4 +154,4 @@ timezone="Local"
   # hostname:port of the default join-server
   #
   # This API is provided by LoRa App Server.
-  server="http://localhost:8003"
+  server="http://appserver:8003"
