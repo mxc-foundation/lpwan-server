@@ -4,9 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-devel
-    command: make serve
     volumes:
       - ./:/loraserver
+      - ./configuration/:/etc/loraserver
     links:
       - postgres
       - redis

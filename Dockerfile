@@ -20,5 +20,8 @@ WORKDIR /root/
 RUN mkdir -p /etc/loraserver
 RUN apk --no-cache add ca-certificates tzdata
 COPY --from=development /network-server/build/ .
-COPY --from=development /network-server/configuration/ /etc/loraserver
-ENTRYPOINT ["./loraserver"]
+COPY --from=development /network-server/configuration/ .
+COPY --from=development /network-server/scripts/init .
+
+RUN ["chmod", "+x", "./start"]
+ENTRYPOINT ["./start"]
