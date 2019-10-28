@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/brocaar/loraserver/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/brocaar/lorawan"
 )
 

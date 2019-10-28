@@ -4,7 +4,7 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/brocaar/loraserver/internal/config"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -52,7 +52,7 @@ dsn="{{ .PostgreSQL.DSN }}"
 # Automatically apply database migrations.
 #
 # It is possible to apply the database-migrations by hand
-# (see https://github.com/brocaar/loraserver/tree/master/migrations)
+# (see https://github.com/mxc-foundation/lpwan-server/tree/master/migrations)
 # or let LoRa App Server migrate to the latest state automatically, by using
 # this setting. Make sure that you always make a backup when upgrading Lora
 # App Server and / or applying migrations.

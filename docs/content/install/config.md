@@ -18,7 +18,7 @@ The `loraserver` binary has the following command-line flags:
 {{<highlight text>}}
 LoRa Server is an open-source network-server, part of the LoRa Server project
         > documentation & support: https://docs.loraserver.io/loraserver/
-        > source & copyright information: https://github.com/brocaar/loraserver/
+        > source & copyright information: https://github.com/mxc-foundation/lpwan-server/
 
 Usage:
   loraserver [flags]
@@ -108,7 +108,7 @@ dsn="postgres://localhost/loraserver_ns?sslmode=disable"
 # Automatically apply database migrations.
 #
 # It is possible to apply the database-migrations by hand
-# (see https://github.com/brocaar/loraserver/tree/master/migrations)
+# (see https://github.com/mxc-foundation/lpwan-server/tree/master/migrations)
 # or let LoRa App Server migrate to the latest state automatically, by using
 # this setting. Make sure that you always make a backup when upgrading Lora
 # App Server and / or applying migrations.
@@ -717,7 +717,7 @@ This means that when configuring this network-server instance in LoRa App Server
 you must provide the CA and TLS client certificate. See also LoRa App Server
 [network-server management](https://docs.loraserver.io/lora-app-server/use/network-servers/).
 
-See [https://github.com/brocaar/loraserver-certificates](https://github.com/brocaar/loraserver-certificates)
+See [https://github.com/mxc-foundation/lpwan-server-certificates](https://github.com/mxc-foundation/lpwan-server-certificates)
 for a set of scripts to generate such certificates.
 
 ## Join-server API configuration
@@ -729,5 +729,5 @@ In case this endpoint is secured using a TLS certificate and expects a client
 certificate, you must set `ca_cert`, `tls_cert` and `tls_key`.
 Also don't forget to change `server` from `http://...` to `https://...`.
 
-See [https://github.com/brocaar/loraserver-certificates](https://github.com/brocaar/loraserver-certificates)
+See [https://github.com/mxc-foundation/lpwan-server-certificates](https://github.com/mxc-foundation/lpwan-server-certificates)
 for a set of scripts to generate such certificates.

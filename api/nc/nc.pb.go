@@ -6,10 +6,12 @@ package nc
 import (
 	context "context"
 	fmt "fmt"
-	gw "github.com/brocaar/loraserver/api/gw"
 	proto "github.com/golang/protobuf/proto"
 	empty "github.com/golang/protobuf/ptypes/empty"
+	gw "github.com/mxc-foundation/lpwan-server/api/gw"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -226,6 +228,17 @@ type NetworkControllerServiceServer interface {
 	// enqueued throught the API or when the CID is >= 0x80 (proprietary
 	// mac-command range).
 	HandleUplinkMACCommand(context.Context, *HandleUplinkMACCommandRequest) (*empty.Empty, error)
+}
+
+// UnimplementedNetworkControllerServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedNetworkControllerServiceServer struct {
+}
+
+func (*UnimplementedNetworkControllerServiceServer) HandleUplinkMetaData(ctx context.Context, req *HandleUplinkMetaDataRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandleUplinkMetaData not implemented")
+}
+func (*UnimplementedNetworkControllerServiceServer) HandleUplinkMACCommand(ctx context.Context, req *HandleUplinkMACCommandRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandleUplinkMACCommand not implemented")
 }
 
 func RegisterNetworkControllerServiceServer(s *grpc.Server, srv NetworkControllerServiceServer) {

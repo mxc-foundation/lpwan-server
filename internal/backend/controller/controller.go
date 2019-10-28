@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/brocaar/loraserver/api/nc"
+	"github.com/mxc-foundation/lpwan-server/api/nc"
 )
 
 var client nc.NetworkControllerServiceClient

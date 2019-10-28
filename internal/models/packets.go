@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/brocaar/loraserver/api/gw"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/brocaar/lorawan"
 )
 
