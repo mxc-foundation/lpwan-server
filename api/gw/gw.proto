@@ -5,8 +5,8 @@ package gw;
 option go_package = "github.com/mxc-foundation/lpwan-server/api/gw";
 
 import "api/common/common.proto";
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
+import "timestamp/timestamp.proto";
+import "duration/duration.proto";
 
 
 enum DownlinkTiming {
