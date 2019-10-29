@@ -13,15 +13,15 @@ services:
       - mosquitto
     tty: true
 
-  postgres:
-    image: postgres:9.5
+  postgresql:
+    image: postgres:9.6-alpine
     environment:
       - POSTGRES_PASSWORD=loraserver
       - POSTGRES_USER=loraserver
       - POSTGRES_DB=loraserver
 
   redis:
-    image: redis:3.0.7-alpine
+    image: redis:5-alpine
 
   mosquitto:
     image: ansi/mosquitto
