@@ -10,9 +10,9 @@ import (
 
 	"github.com/brocaar/lorawan"
 
-	"github.com/brocaar/loraserver/internal/config"
-	"github.com/brocaar/loraserver/internal/storage"
-	"github.com/brocaar/loraserver/internal/test"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 )
 
 type EnqueueQueueItemTestCase struct {

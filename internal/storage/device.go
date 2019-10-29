@@ -8,7 +8,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/brocaar/loraserver/internal/logging"
+	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/brocaar/lorawan"
 )
 

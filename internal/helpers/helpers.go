@@ -6,8 +6,8 @@ import (
 	"github.com/brocaar/lorawan"
 	"github.com/gofrs/uuid"
 
-	"github.com/brocaar/loraserver/api/common"
-	"github.com/brocaar/loraserver/api/gw"
+	"github.com/mxc-foundation/lpwan-server/api/common"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/brocaar/lorawan/band"
 	"github.com/pkg/errors"
 )

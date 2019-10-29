@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/brocaar/loraserver/api/common"
-	"github.com/brocaar/loraserver/internal/config"
-	"github.com/brocaar/loraserver/internal/models"
-	"github.com/brocaar/loraserver/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/api/common"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
+	"github.com/mxc-foundation/lpwan-server/internal/models"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/brocaar/lorawan"
 	"github.com/pkg/errors"
 )

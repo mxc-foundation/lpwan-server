@@ -11,10 +11,10 @@ import (
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 
-	"github.com/brocaar/loraserver/api/ns"
-	"github.com/brocaar/loraserver/internal/config"
-	"github.com/brocaar/loraserver/internal/logging"
-	"github.com/brocaar/loraserver/internal/tls"
+	"github.com/mxc-foundation/lpwan-server/api/ns"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
+	"github.com/mxc-foundation/lpwan-server/internal/logging"
+	"github.com/mxc-foundation/lpwan-server/internal/tls"
 )
 
 func Setup(c config.Config) error {

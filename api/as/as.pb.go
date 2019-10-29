@@ -6,12 +6,14 @@ package as
 import (
 	context "context"
 	fmt "fmt"
-	common "github.com/brocaar/loraserver/api/common"
-	gw "github.com/brocaar/loraserver/api/gw"
 	proto "github.com/golang/protobuf/proto"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
+	common "github.com/mxc-foundation/lpwan-server/api/common"
+	gw "github.com/mxc-foundation/lpwan-server/api/gw"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -893,6 +895,32 @@ type ApplicationServerServiceServer interface {
 	SetDeviceStatus(context.Context, *SetDeviceStatusRequest) (*empty.Empty, error)
 	// SetDeviceLocation updates the device-location for a device.
 	SetDeviceLocation(context.Context, *SetDeviceLocationRequest) (*empty.Empty, error)
+}
+
+// UnimplementedApplicationServerServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedApplicationServerServiceServer struct {
+}
+
+func (*UnimplementedApplicationServerServiceServer) HandleUplinkData(ctx context.Context, req *HandleUplinkDataRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandleUplinkData not implemented")
+}
+func (*UnimplementedApplicationServerServiceServer) HandleProprietaryUplink(ctx context.Context, req *HandleProprietaryUplinkRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandleProprietaryUplink not implemented")
+}
+func (*UnimplementedApplicationServerServiceServer) HandleError(ctx context.Context, req *HandleErrorRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandleError not implemented")
+}
+func (*UnimplementedApplicationServerServiceServer) HandleDownlinkACK(ctx context.Context, req *HandleDownlinkACKRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandleDownlinkACK not implemented")
+}
+func (*UnimplementedApplicationServerServiceServer) HandleGatewayStats(ctx context.Context, req *HandleGatewayStatsRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandleGatewayStats not implemented")
+}
+func (*UnimplementedApplicationServerServiceServer) SetDeviceStatus(ctx context.Context, req *SetDeviceStatusRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetDeviceStatus not implemented")
+}
+func (*UnimplementedApplicationServerServiceServer) SetDeviceLocation(ctx context.Context, req *SetDeviceLocationRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetDeviceLocation not implemented")
 }
 
 func RegisterApplicationServerServiceServer(s *grpc.Server, srv ApplicationServerServiceServer) {

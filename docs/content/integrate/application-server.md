@@ -31,7 +31,7 @@ which allows you to easily generate stubs for various programming languages.
 See the [gRPC](https://grpc.io) site for more information about
 the gRPC framework and how to generate source-code using `.proto` files.
 
-Please refer to [api/as/as.proto](https://github.com/brocaar/loraserver/blob/master/api/as/as.proto)
+Please refer to [api/as/as.proto](https://github.com/mxc-foundation/lpwan-server/blob/master/api/as/as.proto)
 for the application-server API specification. 
 For the network-server API, please refer to the [api documentation]({{<ref "/integrate/api.md">}}) for the
 for more information.

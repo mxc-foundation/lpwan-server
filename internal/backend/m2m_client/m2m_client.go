@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	m2m "github.com/brocaar/loraserver/api/m2m_server"
-	"github.com/brocaar/loraserver/internal/config"
+	m2m "github.com/mxc-foundation/lpwan-server/api/m2m_server"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
 	grpc_logrus "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"

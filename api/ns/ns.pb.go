@@ -6,12 +6,14 @@ package ns
 import (
 	context "context"
 	fmt "fmt"
-	common "github.com/brocaar/loraserver/api/common"
-	gw "github.com/brocaar/loraserver/api/gw"
 	proto "github.com/golang/protobuf/proto"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
+	common "github.com/mxc-foundation/lpwan-server/api/common"
+	gw "github.com/mxc-foundation/lpwan-server/api/gw"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -4900,6 +4902,152 @@ type NetworkServerServiceServer interface {
 	GetMulticastQueueItemsForMulticastGroup(context.Context, *GetMulticastQueueItemsForMulticastGroupRequest) (*GetMulticastQueueItemsForMulticastGroupResponse, error)
 	// GetVersion returns the LoRa Server version.
 	GetVersion(context.Context, *empty.Empty) (*GetVersionResponse, error)
+}
+
+// UnimplementedNetworkServerServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedNetworkServerServiceServer struct {
+}
+
+func (*UnimplementedNetworkServerServiceServer) CreateServiceProfile(ctx context.Context, req *CreateServiceProfileRequest) (*CreateServiceProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateServiceProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetServiceProfile(ctx context.Context, req *GetServiceProfileRequest) (*GetServiceProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServiceProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) UpdateServiceProfile(ctx context.Context, req *UpdateServiceProfileRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateServiceProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) DeleteServiceProfile(ctx context.Context, req *DeleteServiceProfileRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteServiceProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) CreateRoutingProfile(ctx context.Context, req *CreateRoutingProfileRequest) (*CreateRoutingProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRoutingProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetRoutingProfile(ctx context.Context, req *GetRoutingProfileRequest) (*GetRoutingProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoutingProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) UpdateRoutingProfile(ctx context.Context, req *UpdateRoutingProfileRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRoutingProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) DeleteRoutingProfile(ctx context.Context, req *DeleteRoutingProfileRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoutingProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) CreateDeviceProfile(ctx context.Context, req *CreateDeviceProfileRequest) (*CreateDeviceProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDeviceProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetDeviceProfile(ctx context.Context, req *GetDeviceProfileRequest) (*GetDeviceProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDeviceProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) UpdateDeviceProfile(ctx context.Context, req *UpdateDeviceProfileRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDeviceProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) DeleteDeviceProfile(ctx context.Context, req *DeleteDeviceProfileRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDeviceProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) CreateDevice(ctx context.Context, req *CreateDeviceRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDevice not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetDevice(ctx context.Context, req *GetDeviceRequest) (*GetDeviceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDevice not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) UpdateDevice(ctx context.Context, req *UpdateDeviceRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDevice not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) DeleteDevice(ctx context.Context, req *DeleteDeviceRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDevice not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) ActivateDevice(ctx context.Context, req *ActivateDeviceRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateDevice not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) DeactivateDevice(ctx context.Context, req *DeactivateDeviceRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateDevice not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetDeviceActivation(ctx context.Context, req *GetDeviceActivationRequest) (*GetDeviceActivationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDeviceActivation not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) CreateDeviceQueueItem(ctx context.Context, req *CreateDeviceQueueItemRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDeviceQueueItem not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) FlushDeviceQueueForDevEUI(ctx context.Context, req *FlushDeviceQueueForDevEUIRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FlushDeviceQueueForDevEUI not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetDeviceQueueItemsForDevEUI(ctx context.Context, req *GetDeviceQueueItemsForDevEUIRequest) (*GetDeviceQueueItemsForDevEUIResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDeviceQueueItemsForDevEUI not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetNextDownlinkFCntForDevEUI(ctx context.Context, req *GetNextDownlinkFCntForDevEUIRequest) (*GetNextDownlinkFCntForDevEUIResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNextDownlinkFCntForDevEUI not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetRandomDevAddr(ctx context.Context, req *empty.Empty) (*GetRandomDevAddrResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRandomDevAddr not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) CreateMACCommandQueueItem(ctx context.Context, req *CreateMACCommandQueueItemRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMACCommandQueueItem not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) SendProprietaryPayload(ctx context.Context, req *SendProprietaryPayloadRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendProprietaryPayload not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) CreateGateway(ctx context.Context, req *CreateGatewayRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateGateway not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetGateway(ctx context.Context, req *GetGatewayRequest) (*GetGatewayResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGateway not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) UpdateGateway(ctx context.Context, req *UpdateGatewayRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGateway not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) DeleteGateway(ctx context.Context, req *DeleteGatewayRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteGateway not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) CreateGatewayProfile(ctx context.Context, req *CreateGatewayProfileRequest) (*CreateGatewayProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateGatewayProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetGatewayProfile(ctx context.Context, req *GetGatewayProfileRequest) (*GetGatewayProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGatewayProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) UpdateGatewayProfile(ctx context.Context, req *UpdateGatewayProfileRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGatewayProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) DeleteGatewayProfile(ctx context.Context, req *DeleteGatewayProfileRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteGatewayProfile not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetGatewayStats(ctx context.Context, req *GetGatewayStatsRequest) (*GetGatewayStatsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGatewayStats not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) StreamFrameLogsForGateway(req *StreamFrameLogsForGatewayRequest, srv NetworkServerService_StreamFrameLogsForGatewayServer) error {
+	return status.Errorf(codes.Unimplemented, "method StreamFrameLogsForGateway not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) StreamFrameLogsForDevice(req *StreamFrameLogsForDeviceRequest, srv NetworkServerService_StreamFrameLogsForDeviceServer) error {
+	return status.Errorf(codes.Unimplemented, "method StreamFrameLogsForDevice not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) CreateMulticastGroup(ctx context.Context, req *CreateMulticastGroupRequest) (*CreateMulticastGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMulticastGroup not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetMulticastGroup(ctx context.Context, req *GetMulticastGroupRequest) (*GetMulticastGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMulticastGroup not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) UpdateMulticastGroup(ctx context.Context, req *UpdateMulticastGroupRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMulticastGroup not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) DeleteMulticastGroup(ctx context.Context, req *DeleteMulticastGroupRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMulticastGroup not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) AddDeviceToMulticastGroup(ctx context.Context, req *AddDeviceToMulticastGroupRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddDeviceToMulticastGroup not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) RemoveDeviceFromMulticastGroup(ctx context.Context, req *RemoveDeviceFromMulticastGroupRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveDeviceFromMulticastGroup not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) EnqueueMulticastQueueItem(ctx context.Context, req *EnqueueMulticastQueueItemRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnqueueMulticastQueueItem not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) FlushMulticastQueueForMulticastGroup(ctx context.Context, req *FlushMulticastQueueForMulticastGroupRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FlushMulticastQueueForMulticastGroup not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetMulticastQueueItemsForMulticastGroup(ctx context.Context, req *GetMulticastQueueItemsForMulticastGroupRequest) (*GetMulticastQueueItemsForMulticastGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMulticastQueueItemsForMulticastGroup not implemented")
+}
+func (*UnimplementedNetworkServerServiceServer) GetVersion(ctx context.Context, req *empty.Empty) (*GetVersionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVersion not implemented")
 }
 
 func RegisterNetworkServerServiceServer(s *grpc.Server, srv NetworkServerServiceServer) {
