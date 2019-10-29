@@ -8,11 +8,11 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/brocaar/loraserver/api/gw"
-	"github.com/brocaar/loraserver/internal/backend/gateway"
-	"github.com/brocaar/loraserver/internal/backend/gateway/marshaler"
-	"github.com/brocaar/loraserver/internal/storage"
-	"github.com/brocaar/loraserver/internal/test"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/marshaler"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 	"github.com/brocaar/lorawan"
 )
 

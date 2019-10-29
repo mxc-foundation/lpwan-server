@@ -8,9 +8,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 
-	"github.com/brocaar/loraserver/internal/downlink/data/classb"
-	"github.com/brocaar/loraserver/internal/gps"
-	"github.com/brocaar/loraserver/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink/data/classb"
+	"github.com/mxc-foundation/lpwan-server/internal/gps"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 )
 
 // EnqueueQueueItem selects the gateways that must be used to cover all devices

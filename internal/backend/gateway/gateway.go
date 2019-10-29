@@ -1,6 +1,6 @@
 package gateway
 
-import "github.com/brocaar/loraserver/api/gw"
+import "github.com/mxc-foundation/lpwan-server/api/gw"
 
 var backend Gateway
 

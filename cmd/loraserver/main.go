@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/brocaar/loraserver/cmd/loraserver/cmd"
+	"github.com/mxc-foundation/lpwan-server/cmd/loraserver/cmd"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/grpclog"
 )

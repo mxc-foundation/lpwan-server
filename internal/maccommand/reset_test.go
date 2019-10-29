@@ -7,7 +7,7 @@ import (
 
 	"github.com/brocaar/lorawan/band"
 
-	"github.com/brocaar/loraserver/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/brocaar/lorawan"
 	. "github.com/smartystreets/goconvey/convey"
 )

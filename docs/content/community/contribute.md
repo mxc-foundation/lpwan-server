@@ -13,7 +13,7 @@ There are a couple of ways to get involved:
 
 * Join the discussions:
     * LoRa Server project forum [https://forum.loraserver.io/](https://forum.loraserver.io/)
-* Report bugs or make feature-requests by opening an issue at [https://github.com/brocaar/loraserver/issues](https://github.com/brocaar/loraserver/issues)
+* Report bugs or make feature-requests by opening an issue at [https://github.com/mxc-foundation/lpwan-server/issues](https://github.com/mxc-foundation/lpwan-server/issues)
 * Help fixing issues or improve documentation by creating pull-requests
 
 When you would like to add new features, please discuss the feature first

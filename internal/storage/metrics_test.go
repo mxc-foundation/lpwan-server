@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/brocaar/loraserver/internal/test"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 )
 
 func (ts *StorageTestSuite) TestMetrics() {

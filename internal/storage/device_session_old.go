@@ -3,7 +3,7 @@ package storage
 import (
 	"time"
 
-	"github.com/brocaar/loraserver/internal/band"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
 	"github.com/brocaar/lorawan"
 	loraband "github.com/brocaar/lorawan/band"
 	"github.com/gofrs/uuid"

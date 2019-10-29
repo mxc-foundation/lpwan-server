@@ -10,8 +10,8 @@ import (
 	migrate "github.com/rubenv/sql-migrate"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/brocaar/loraserver/internal/config"
-	"github.com/brocaar/loraserver/internal/migrations"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
+	"github.com/mxc-foundation/lpwan-server/internal/migrations"
 )
 
 // deviceSessionTTL holds the device-session TTL.

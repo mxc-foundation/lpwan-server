@@ -6,10 +6,12 @@ package geo
 import (
 	context "context"
 	fmt "fmt"
-	common "github.com/brocaar/loraserver/api/common"
-	gw "github.com/brocaar/loraserver/api/gw"
 	proto "github.com/golang/protobuf/proto"
+	common "github.com/mxc-foundation/lpwan-server/api/common"
+	gw "github.com/mxc-foundation/lpwan-server/api/gw"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -393,6 +395,17 @@ type GeolocationServerServiceServer interface {
 	// ResolveMultiFrameTDOA resolves the location using TDOA, based on
 	// multiple frames.
 	ResolveMultiFrameTDOA(context.Context, *ResolveMultiFrameTDOARequest) (*ResolveMultiFrameTDOAResponse, error)
+}
+
+// UnimplementedGeolocationServerServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedGeolocationServerServiceServer struct {
+}
+
+func (*UnimplementedGeolocationServerServiceServer) ResolveTDOA(ctx context.Context, req *ResolveTDOARequest) (*ResolveTDOAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResolveTDOA not implemented")
+}
+func (*UnimplementedGeolocationServerServiceServer) ResolveMultiFrameTDOA(ctx context.Context, req *ResolveMultiFrameTDOARequest) (*ResolveMultiFrameTDOAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResolveMultiFrameTDOA not implemented")
 }
 
 func RegisterGeolocationServerServiceServer(s *grpc.Server, srv GeolocationServerServiceServer) {

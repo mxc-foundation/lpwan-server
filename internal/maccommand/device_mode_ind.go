@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/brocaar/loraserver/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/brocaar/lorawan"
 )
 

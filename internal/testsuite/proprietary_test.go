@@ -6,13 +6,13 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/brocaar/loraserver/api/as"
-	"github.com/brocaar/loraserver/api/common"
-	"github.com/brocaar/loraserver/api/gw"
-	"github.com/brocaar/loraserver/api/ns"
-	"github.com/brocaar/loraserver/internal/downlink"
-	"github.com/brocaar/loraserver/internal/storage"
-	"github.com/brocaar/loraserver/internal/test"
+	"github.com/mxc-foundation/lpwan-server/api/as"
+	"github.com/mxc-foundation/lpwan-server/api/common"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
+	"github.com/mxc-foundation/lpwan-server/api/ns"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 	"github.com/brocaar/lorawan"
 )
 
