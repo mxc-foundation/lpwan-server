@@ -5,12 +5,13 @@ services:
       context: .
       dockerfile: Dockerfile-devel
     volumes:
-      - ./:/loraserver
+      - ./:/network-server
       - ./configuration/:/etc/loraserver
     links:
       - postgres
       - redis
       - mosquitto
+    tty: true
 
   postgres:
     image: postgres:9.5
