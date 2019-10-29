@@ -8,7 +8,7 @@ services:
       - ./:/network-server
       - ./configuration/:/etc/loraserver
     links:
-      - postgres
+      - postgresql
       - redis
       - mosquitto
     tty: true
