@@ -7,11 +7,11 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/internal/band"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
 )
 
 var pktLossRateTable = [][3]uint8{

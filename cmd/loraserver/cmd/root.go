@@ -13,8 +13,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/brocaar/lorawan/band"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
 )
 
 var cfgFile string

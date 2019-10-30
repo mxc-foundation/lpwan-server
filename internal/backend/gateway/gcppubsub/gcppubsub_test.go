@@ -3,10 +3,10 @@ package gcppubsub
 import (
 	"testing"
 
-	"github.com/mxc-foundation/lpwan-server/api/gw"
-	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/marshaler"
 	"github.com/brocaar/lorawan"
 	"github.com/golang/protobuf/proto"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/marshaler"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"

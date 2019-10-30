@@ -12,6 +12,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
+	"github.com/brocaar/lorawan"
+	"github.com/brocaar/lorawan/backend"
 	"github.com/mxc-foundation/lpwan-server/api/common"
 	"github.com/mxc-foundation/lpwan-server/api/ns"
 	"github.com/mxc-foundation/lpwan-server/internal/band"
@@ -23,8 +25,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/gps"
 	"github.com/mxc-foundation/lpwan-server/internal/helpers"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
-	"github.com/brocaar/lorawan/backend"
 )
 
 // defaultCodeRate defines the default code rate

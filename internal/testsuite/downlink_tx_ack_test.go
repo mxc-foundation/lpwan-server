@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
 )
 
 type DownlinkTXAckTestSuite struct {

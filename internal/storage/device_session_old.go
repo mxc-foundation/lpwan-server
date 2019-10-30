@@ -3,10 +3,10 @@ package storage
 import (
 	"time"
 
-	"github.com/mxc-foundation/lpwan-server/internal/band"
 	"github.com/brocaar/lorawan"
 	loraband "github.com/brocaar/lorawan/band"
 	"github.com/gofrs/uuid"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
 )
 
 // DeviceSessionOld defines the "old" device-session struct.

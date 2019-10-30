@@ -11,6 +11,9 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/brocaar/lorawan"
+	"github.com/brocaar/lorawan/backend"
+	loraband "github.com/brocaar/lorawan/band"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/joinserver"
 	"github.com/mxc-foundation/lpwan-server/internal/band"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
@@ -18,9 +21,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/framelog"
 	"github.com/mxc-foundation/lpwan-server/internal/models"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
-	"github.com/brocaar/lorawan/backend"
-	loraband "github.com/brocaar/lorawan/band"
 )
 
 var tasks = []func(*joinContext) error{

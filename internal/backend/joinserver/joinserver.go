@@ -3,8 +3,8 @@ package joinserver
 import (
 	"github.com/pkg/errors"
 
-	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
 )
 
 var p Pool

@@ -11,14 +11,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mxc-foundation/lpwan-server/api/common"
-	"github.com/mxc-foundation/lpwan-server/internal/band"
-	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/brocaar/lorawan"
 	loraband "github.com/brocaar/lorawan/band"
 	"github.com/gofrs/uuid"
 	proto "github.com/golang/protobuf/proto"
 	"github.com/gomodule/redigo/redis"
+	"github.com/mxc-foundation/lpwan-server/api/common"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
+	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
@@ -644,8 +644,8 @@ func deviceSessionToPB(d DeviceSession) DeviceSessionPB {
 		Rx2Frequency: uint32(d.RX2Frequency),
 		TxPowerIndex: uint32(d.TXPowerIndex),
 
-		Dr:  uint32(d.DR),
-		Adr: d.ADR,
+		Dr:                       uint32(d.DR),
+		Adr:                      d.ADR,
 		MinSupportedTxPowerIndex: uint32(d.MinSupportedTXPowerIndex),
 		MaxSupportedTxPowerIndex: uint32(d.MaxSupportedTXPowerIndex),
 		NbTrans:                  uint32(d.NbTrans),
@@ -741,8 +741,8 @@ func deviceSessionFromPB(d DeviceSessionPB) DeviceSession {
 		RX2Frequency: int(d.Rx2Frequency),
 		TXPowerIndex: int(d.TxPowerIndex),
 
-		DR:  int(d.Dr),
-		ADR: d.Adr,
+		DR:                       int(d.Dr),
+		ADR:                      d.Adr,
 		MinSupportedTXPowerIndex: int(d.MinSupportedTxPowerIndex),
 		MaxSupportedTXPowerIndex: int(d.MaxSupportedTxPowerIndex),
 		NbTrans:                  uint8(d.NbTrans),

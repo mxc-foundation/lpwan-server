@@ -7,13 +7,13 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
+	"github.com/brocaar/lorawan"
+	loraband "github.com/brocaar/lorawan/band"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/applicationserver"
 	"github.com/mxc-foundation/lpwan-server/internal/band"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/mxc-foundation/lpwan-server/internal/test"
-	"github.com/brocaar/lorawan"
-	loraband "github.com/brocaar/lorawan/band"
 )
 
 type GetNextDeviceQueueItemTestSuite struct {

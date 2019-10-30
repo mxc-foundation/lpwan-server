@@ -6,9 +6,9 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
 )
 
 func handlePingSlotInfoReq(ctx context.Context, ds *storage.DeviceSession, block storage.MACCommandBlock) ([]storage.MACCommandBlock, error) {

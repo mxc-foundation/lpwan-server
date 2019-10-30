@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
+	loraband "github.com/brocaar/lorawan/band"
 	"github.com/mxc-foundation/lpwan-server/api/as"
 	"github.com/mxc-foundation/lpwan-server/api/common"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
@@ -15,7 +16,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/helpers"
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	loraband "github.com/brocaar/lorawan/band"
 )
 
 type statsContext struct {

@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/brocaar/lorawan"
+	"github.com/golang/protobuf/ptypes"
 	"github.com/mxc-foundation/lpwan-server/api/geo"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/test"
-	"github.com/brocaar/lorawan"
-	"github.com/golang/protobuf/ptypes"
 	"github.com/stretchr/testify/require"
 )
 

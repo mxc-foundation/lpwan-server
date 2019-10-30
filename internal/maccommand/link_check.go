@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/common"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/models"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
 	"github.com/pkg/errors"
 )
 

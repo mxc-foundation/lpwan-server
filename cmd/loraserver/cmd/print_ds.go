@@ -8,9 +8,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
 )
 
 var printDSCmd = &cobra.Command{

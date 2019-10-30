@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/brocaar/lorawan"
 	m2m_api "github.com/mxc-foundation/lpwan-server/api/m2m_server"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/m2m_client"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )

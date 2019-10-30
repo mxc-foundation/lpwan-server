@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

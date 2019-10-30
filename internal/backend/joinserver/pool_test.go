@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/mxc-foundation/lpwan-server/internal/test"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 )
 
 func init() {

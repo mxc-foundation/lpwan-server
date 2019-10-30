@@ -10,6 +10,7 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/mxc-foundation/lpwan-server/api/geo"
 	"github.com/mxc-foundation/lpwan-server/api/nc"
 	"github.com/mxc-foundation/lpwan-server/internal/adr"
@@ -31,7 +32,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/migrations/code"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/mxc-foundation/lpwan-server/internal/uplink"
-	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

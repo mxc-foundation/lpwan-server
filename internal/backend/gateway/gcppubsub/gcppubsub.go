@@ -14,12 +14,12 @@ import (
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/api/option"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/marshaler"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/helpers"
-	"github.com/brocaar/lorawan"
 )
 
 const uplinkSubscriptionTmpl = "%s-loraserver"

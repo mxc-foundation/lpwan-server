@@ -7,6 +7,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/brocaar/lorawan"
+	loraband "github.com/brocaar/lorawan/band"
+	"github.com/gofrs/uuid"
+	"github.com/golang/protobuf/ptypes"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	m2m_api "github.com/mxc-foundation/lpwan-server/api/m2m_server"
 	"github.com/mxc-foundation/lpwan-server/internal/adr"
@@ -21,10 +25,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/maccommand"
 	"github.com/mxc-foundation/lpwan-server/internal/models"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
-	loraband "github.com/brocaar/lorawan/band"
-	"github.com/gofrs/uuid"
-	"github.com/golang/protobuf/ptypes"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
@@ -1152,7 +1152,7 @@ func checkLastDownlinkTimestamp(ctx *dataContext) error {
 			"time":                           time.Now(),
 			"last_downlink_tx_time":          ctx.DeviceSession.LastDownlinkTX,
 			"class_c_downlink_lock_duration": classCDownlinkLockDuration,
-			"ctx_id": ctx.ctx.Value(logging.ContextIDKey),
+			"ctx_id":                         ctx.ctx.Value(logging.ContextIDKey),
 		}).Debug("skip next downlink queue scheduling dueue to class-c downlink lock")
 		return ErrAbort
 	}

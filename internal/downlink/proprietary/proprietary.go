@@ -8,6 +8,7 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/pkg/errors"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/common"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
@@ -15,7 +16,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/helpers"
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
-	"github.com/brocaar/lorawan"
 )
 
 const defaultCodeRate = "4/5"

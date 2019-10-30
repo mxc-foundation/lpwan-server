@@ -7,9 +7,9 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
 )
 
 // RequestRXParamSetup modifies the RX1 data-rate offset, RX2 frequency and

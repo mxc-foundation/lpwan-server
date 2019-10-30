@@ -3,9 +3,9 @@ package config
 import (
 	"time"
 
-	"github.com/mxc-foundation/lpwan-server/api/nc"
 	"github.com/brocaar/lorawan"
 	"github.com/brocaar/lorawan/band"
+	"github.com/mxc-foundation/lpwan-server/api/nc"
 )
 
 // Version defines the LoRa Server version.

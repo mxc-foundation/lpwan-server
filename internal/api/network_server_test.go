@@ -14,6 +14,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/common"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/api/ns"
@@ -22,7 +23,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/gps"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/mxc-foundation/lpwan-server/internal/test"
-	"github.com/brocaar/lorawan"
 )
 
 func TestNetworkServerAPI(t *testing.T) {

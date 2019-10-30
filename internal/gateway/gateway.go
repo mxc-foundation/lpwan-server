@@ -15,6 +15,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/common"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
@@ -22,7 +23,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/helpers"
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
 )
 
 // StatsHandler represents a stat handler for incoming gateway stats.

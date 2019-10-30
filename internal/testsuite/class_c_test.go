@@ -7,13 +7,13 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/band"
 	"github.com/mxc-foundation/lpwan-server/internal/downlink"
 	"github.com/mxc-foundation/lpwan-server/internal/helpers"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/mxc-foundation/lpwan-server/internal/test"
-	"github.com/brocaar/lorawan"
 )
 
 type ClassCTestSuite struct {

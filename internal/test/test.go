@@ -13,6 +13,8 @@ import (
 	context "golang.org/x/net/context"
 	"google.golang.org/grpc"
 
+	"github.com/brocaar/lorawan"
+	loraband "github.com/brocaar/lorawan/band"
 	"github.com/mxc-foundation/lpwan-server/api/as"
 	"github.com/mxc-foundation/lpwan-server/api/geo"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
@@ -21,8 +23,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/band"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/migrations"
-	"github.com/brocaar/lorawan"
-	loraband "github.com/brocaar/lorawan/band"
 )
 
 func init() {

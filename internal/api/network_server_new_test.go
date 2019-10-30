@@ -11,6 +11,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
+	"github.com/brocaar/lorawan"
+	loraband "github.com/brocaar/lorawan/band"
 	"github.com/mxc-foundation/lpwan-server/api/ns"
 	"github.com/mxc-foundation/lpwan-server/internal/band"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
@@ -18,8 +20,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/gps"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/mxc-foundation/lpwan-server/internal/test"
-	"github.com/brocaar/lorawan"
-	loraband "github.com/brocaar/lorawan/band"
 )
 
 type NetworkServerAPITestSuite struct {

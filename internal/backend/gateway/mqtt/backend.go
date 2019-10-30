@@ -19,12 +19,12 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/marshaler"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/helpers"
-	"github.com/brocaar/lorawan"
 )
 
 const uplinkLockTTL = time.Millisecond * 500

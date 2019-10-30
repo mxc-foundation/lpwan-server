@@ -17,12 +17,12 @@ import (
 	log "github.com/sirupsen/logrus"
 	"pack.ag/amqp"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/marshaler"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/mxc-foundation/lpwan-server/internal/helpers"
-	"github.com/brocaar/lorawan"
 )
 
 // Backend implement an Azure IoT Hub backend.

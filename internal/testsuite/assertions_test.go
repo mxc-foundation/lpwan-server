@@ -9,13 +9,13 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/require"
 
+	"github.com/brocaar/lorawan"
+	"github.com/brocaar/lorawan/backend"
 	"github.com/mxc-foundation/lpwan-server/api/as"
 	"github.com/mxc-foundation/lpwan-server/api/geo"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/api/nc"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
-	"github.com/brocaar/lorawan/backend"
 )
 
 var lastToken uint32

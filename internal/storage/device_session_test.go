@@ -8,10 +8,10 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/require"
 
-	"github.com/mxc-foundation/lpwan-server/internal/band"
-	"github.com/mxc-foundation/lpwan-server/internal/test"
 	"github.com/brocaar/lorawan"
 	loraband "github.com/brocaar/lorawan/band"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 )
 
 func TestGetRandomDevAddr(t *testing.T) {

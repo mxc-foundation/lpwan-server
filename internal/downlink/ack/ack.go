@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/binary"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
 	"github.com/pkg/errors"
 )
 
@@ -57,7 +57,7 @@ func HandleDownlinkTXAck(ctx context.Context, downlinkTXAck gw.DownlinkTXAck) er
 // 		return nil
 // 	}
 // 	// retrieve ctx based on Token -
-// 	fmt.Println("ack.go/abortOnNoError - Downlink is sent successfully- ctx: ", ctx) 
+// 	fmt.Println("ack.go/abortOnNoError - Downlink is sent successfully- ctx: ", ctx)
 
 // 	// Not all of the gateways support this ack
 // 	// Event after getting the ack there is no guarantee that the downlink is sent

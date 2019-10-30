@@ -8,6 +8,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/brocaar/lorawan"
+	"github.com/gofrs/uuid"
+	"github.com/golang/protobuf/ptypes"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	m2m_api "github.com/mxc-foundation/lpwan-server/api/m2m_server"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
@@ -19,9 +22,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/mxc-foundation/lpwan-server/internal/models"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
-	"github.com/brocaar/lorawan"
-	"github.com/gofrs/uuid"
-	"github.com/golang/protobuf/ptypes"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )

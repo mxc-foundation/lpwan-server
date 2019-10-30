@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/gofrs/uuid"
 	"github.com/gomodule/redigo/redis"
 	"github.com/jmoiron/sqlx"
+	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )

@@ -3,8 +3,8 @@ package controller
 import (
 	"context"
 
-	"github.com/mxc-foundation/lpwan-server/api/nc"
 	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/mxc-foundation/lpwan-server/api/nc"
 	"google.golang.org/grpc"
 )
 

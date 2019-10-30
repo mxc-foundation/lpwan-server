@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
+	"github.com/gofrs/uuid"
+	"github.com/jmoiron/sqlx"
 	"github.com/mxc-foundation/lpwan-server/api/as"
 	"github.com/mxc-foundation/lpwan-server/internal/backend/applicationserver"
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
-	"github.com/gofrs/uuid"
-	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )

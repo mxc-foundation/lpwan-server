@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/mxc-foundation/lpwan-server/internal/test"
-	"github.com/brocaar/lorawan"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

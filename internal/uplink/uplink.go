@@ -11,6 +11,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	gwbackend "github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
 	"github.com/mxc-foundation/lpwan-server/internal/config"
@@ -25,7 +26,6 @@ import (
 	"github.com/mxc-foundation/lpwan-server/internal/uplink/join"
 	"github.com/mxc-foundation/lpwan-server/internal/uplink/proprietary"
 	"github.com/mxc-foundation/lpwan-server/internal/uplink/rejoin"
-	"github.com/brocaar/lorawan"
 )
 
 var (

@@ -10,9 +10,9 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/brocaar/lorawan"
 	"github.com/mxc-foundation/lpwan-server/api/gw"
 	"github.com/mxc-foundation/lpwan-server/internal/logging"
-	"github.com/brocaar/lorawan"
 )
 
 const downlinkFramesTTL = time.Second * 10
