@@ -1,3 +1,3 @@
-//go:generate protoc -I=. -I=../.. --go_out=paths=source_relative,plugins=grpc:. nc.proto
+//go:generate ./gen.sh
 
 package nc
