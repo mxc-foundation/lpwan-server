@@ -5,8 +5,8 @@ package storage
 
 import (
 	fmt "fmt"
-	common "github.com/brocaar/loraserver/api/common"
 	proto "github.com/golang/protobuf/proto"
+	common "github.com/mxc-foundation/lpwan-server/api/common"
 	math "math"
 )
 

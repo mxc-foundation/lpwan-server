@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/brocaar/loraserver/internal/config"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/brocaar/lorawan/band"
 )
 
@@ -38,7 +38,7 @@ var rootCmd = &cobra.Command{
 	Short: "LoRa Server network-server",
 	Long: `LoRa Server is an open-source network-server, part of the LoRa Server project
 	> documentation & support: https://www.loraserver.io/loraserver/
-	> source & copyright information: https://github.com/brocaar/loraserver/`,
+	> source & copyright information: https://github.com/mxc-foundation/lpwan-server/`,
 	RunE: run,
 }
 

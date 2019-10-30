@@ -3,7 +3,7 @@ package controller
 import (
 	"context"
 
-	"github.com/brocaar/loraserver/api/nc"
+	"github.com/mxc-foundation/lpwan-server/api/nc"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
 )

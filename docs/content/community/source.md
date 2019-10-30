@@ -9,7 +9,7 @@ description: How to get the LoRa Server source and how to compile this into an e
 
 # LoRa Server source
 
-Source-code can be found at [https://github.com/brocaar/loraserver](https://github.com/brocaar/loraserver).
+Source-code can be found at [https://github.com/mxc-foundation/lpwan-server](https://github.com/mxc-foundation/lpwan-server).
 
 ## Building
 

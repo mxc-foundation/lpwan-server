@@ -1,6 +1,6 @@
 package geolocationserver
 
-import "github.com/brocaar/loraserver/api/geo"
+import "github.com/mxc-foundation/lpwan-server/api/geo"
 
 var client geo.GeolocationServerServiceClient
 

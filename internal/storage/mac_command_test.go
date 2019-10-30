@@ -6,7 +6,7 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/brocaar/loraserver/internal/test"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 	"github.com/brocaar/lorawan"
 )
 

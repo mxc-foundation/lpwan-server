@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/brocaar/loraserver/internal/logging"
+	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/gofrs/uuid"
 	"github.com/gomodule/redigo/redis"
 	"github.com/jmoiron/sqlx"

@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package ns;
 
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
+import "timestamp/timestamp.proto";
+import "empty/empty.proto";
 import "api/common/common.proto";
 import "api/gw/gw.proto";
 import "profiles.proto";

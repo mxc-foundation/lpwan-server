@@ -7,7 +7,7 @@ import (
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 
-	"github.com/brocaar/loraserver/api/gw"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
 )
 
 // UnmarshalGatewayStats unmarshals an GatewayStats.

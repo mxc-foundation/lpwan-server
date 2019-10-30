@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/brocaar/loraserver/api/gw"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
 )
 
 func TestRXInfoSet(t *testing.T) {
