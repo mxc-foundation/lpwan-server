@@ -3,9 +3,9 @@ package config
 import (
 	"time"
 
-	"github.com/brocaar/loraserver/api/nc"
 	"github.com/brocaar/lorawan"
 	"github.com/brocaar/lorawan/band"
+	"github.com/mxc-foundation/lpwan-server/api/nc"
 )
 
 // Version defines the LoRa Server version.
@@ -161,6 +161,13 @@ type Config struct {
 			}
 		} `mapstructure:"kek"`
 	} `mapstructure:"join_server"`
+
+	M2MServer struct {
+		M2MServer string `mapstructure:"m2m_server"`
+		CACert    string `mapstructure:"ca_cert"`
+		TLSCert   string `mapstructure:"tls_cert"`
+		TLSKey    string `mapstructure:"tls_key"`
+	} `mapstructure:"m2m_server"`
 
 	NetworkController struct {
 		Client nc.NetworkControllerServiceClient

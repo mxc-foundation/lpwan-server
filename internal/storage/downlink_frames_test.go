@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/brocaar/loraserver/api/gw"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
 )
 
 func (ts *StorageTestSuite) TestDownlinkFrames() {

@@ -9,9 +9,9 @@ import (
 	"gonum.org/v1/gonum/graph/path"
 	"gonum.org/v1/gonum/graph/simple"
 
-	"github.com/brocaar/loraserver/internal/band"
-	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 )
 
 // GetMinimumGatewaySet returns the minimum set of gateways to cover all

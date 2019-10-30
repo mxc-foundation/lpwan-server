@@ -8,13 +8,13 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/brocaar/loraserver/api/gw"
-	"github.com/brocaar/loraserver/internal/band"
-	"github.com/brocaar/loraserver/internal/helpers"
-	"github.com/brocaar/loraserver/internal/models"
-	"github.com/brocaar/loraserver/internal/storage"
-	"github.com/brocaar/loraserver/internal/test"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
+	"github.com/mxc-foundation/lpwan-server/internal/helpers"
+	"github.com/mxc-foundation/lpwan-server/internal/models"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 )
 
 type CollectTestSuite struct {

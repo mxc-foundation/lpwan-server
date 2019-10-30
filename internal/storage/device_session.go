@@ -11,17 +11,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/brocaar/lorawan"
+	loraband "github.com/brocaar/lorawan/band"
 	"github.com/gofrs/uuid"
 	proto "github.com/golang/protobuf/proto"
 	"github.com/gomodule/redigo/redis"
+	"github.com/mxc-foundation/lpwan-server/api/common"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
+	"github.com/mxc-foundation/lpwan-server/internal/logging"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-
-	"github.com/brocaar/loraserver/api/common"
-	"github.com/brocaar/loraserver/internal/band"
-	"github.com/brocaar/loraserver/internal/logging"
-	"github.com/brocaar/lorawan"
-	loraband "github.com/brocaar/lorawan/band"
 )
 
 const (
@@ -556,6 +555,7 @@ func DeleteDeviceGatewayRXInfoSet(ctx context.Context, p *redis.Pool, devEUI lor
 // GetDeviceGatewayRXInfoSet returns the DeviceGatewayRXInfoSet for the given
 // Device EUI.
 func GetDeviceGatewayRXInfoSet(ctx context.Context, p *redis.Pool, devEUI lorawan.EUI64) (DeviceGatewayRXInfoSet, error) {
+
 	var rxInfoSetPB DeviceGatewayRXInfoSetPB
 
 	c := p.Get()

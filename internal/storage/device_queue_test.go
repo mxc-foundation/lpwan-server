@@ -9,11 +9,11 @@ import (
 	"github.com/pkg/errors"
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/brocaar/loraserver/api/as"
-	"github.com/brocaar/loraserver/internal/backend/applicationserver"
-	"github.com/brocaar/loraserver/internal/gps"
-	"github.com/brocaar/loraserver/internal/test"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/as"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/applicationserver"
+	"github.com/mxc-foundation/lpwan-server/internal/gps"
+	"github.com/mxc-foundation/lpwan-server/internal/test"
 )
 
 func TestDeviceQueueItemValidate(t *testing.T) {

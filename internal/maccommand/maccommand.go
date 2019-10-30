@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/brocaar/loraserver/api/as"
-	"github.com/brocaar/loraserver/internal/models"
-	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/as"
+	"github.com/mxc-foundation/lpwan-server/internal/models"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 )
 
 // Handle handles a MACCommand sent by a node.

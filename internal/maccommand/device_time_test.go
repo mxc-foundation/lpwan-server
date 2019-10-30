@@ -8,11 +8,11 @@ import (
 	"github.com/golang/protobuf/ptypes"
 	"github.com/stretchr/testify/require"
 
-	"github.com/brocaar/loraserver/api/gw"
-	"github.com/brocaar/loraserver/internal/gps"
-	"github.com/brocaar/loraserver/internal/models"
-	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
+	"github.com/mxc-foundation/lpwan-server/internal/gps"
+	"github.com/mxc-foundation/lpwan-server/internal/models"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 )
 
 func TestDeviceTime(t *testing.T) {

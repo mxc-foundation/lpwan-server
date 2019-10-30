@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/brocaar/loraserver/internal/band"
-	"github.com/brocaar/loraserver/internal/logging"
-	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
+	"github.com/mxc-foundation/lpwan-server/internal/logging"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )

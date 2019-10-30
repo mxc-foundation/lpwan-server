@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package nc;
 
-import "google/protobuf/empty.proto";
+import "empty/empty.proto";
 import "api/gw/gw.proto";
 
 // NetworkControllerService is the server to be implemeted by the network-controller.

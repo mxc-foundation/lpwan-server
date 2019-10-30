@@ -10,33 +10,33 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/brocaar/loraserver/internal/adr"
-	"github.com/brocaar/loraserver/internal/backend/gateway/azureiothub"
-	"github.com/brocaar/loraserver/internal/metrics"
 	"github.com/jmoiron/sqlx"
+	"github.com/mxc-foundation/lpwan-server/api/geo"
+	"github.com/mxc-foundation/lpwan-server/api/nc"
+	"github.com/mxc-foundation/lpwan-server/internal/adr"
+	"github.com/mxc-foundation/lpwan-server/internal/api"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/applicationserver"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/controller"
+	gwbackend "github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/azureiothub"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/gcppubsub"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway/mqtt"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/geolocationserver"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/joinserver"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/m2m_client"
+	"github.com/mxc-foundation/lpwan-server/internal/band"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink"
+	"github.com/mxc-foundation/lpwan-server/internal/gateway"
+	"github.com/mxc-foundation/lpwan-server/internal/metrics"
+	"github.com/mxc-foundation/lpwan-server/internal/migrations/code"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/uplink"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-
-	"github.com/brocaar/loraserver/api/geo"
-	"github.com/brocaar/loraserver/api/nc"
-	"github.com/brocaar/loraserver/internal/api"
-	"github.com/brocaar/loraserver/internal/backend/applicationserver"
-	"github.com/brocaar/loraserver/internal/backend/controller"
-	gwbackend "github.com/brocaar/loraserver/internal/backend/gateway"
-	"github.com/brocaar/loraserver/internal/backend/gateway/gcppubsub"
-	"github.com/brocaar/loraserver/internal/backend/gateway/mqtt"
-	"github.com/brocaar/loraserver/internal/backend/geolocationserver"
-	"github.com/brocaar/loraserver/internal/backend/joinserver"
-	"github.com/brocaar/loraserver/internal/band"
-	"github.com/brocaar/loraserver/internal/config"
-	"github.com/brocaar/loraserver/internal/downlink"
-	"github.com/brocaar/loraserver/internal/gateway"
-	"github.com/brocaar/loraserver/internal/migrations/code"
-	"github.com/brocaar/loraserver/internal/storage"
-	"github.com/brocaar/loraserver/internal/uplink"
 )
 
 func run(cmd *cobra.Command, args []string) error {
@@ -66,6 +66,7 @@ func run(cmd *cobra.Command, args []string) error {
 		startLoRaServer(server),
 		startStatsServer(gwStats),
 		startQueueScheduler,
+		setupM2MServer,
 	}
 
 	for _, t := range tasks {
@@ -410,4 +411,11 @@ func flushGatewayCache() error {
 	return code.Migrate("stats_migration_flush_gw_cache", func(db sqlx.Ext) error {
 		return code.FlushGatewayCache(db)
 	})
+}
+
+func setupM2MServer() error {
+	if err := m2m_client.Setup(config.C); err != nil {
+		return errors.Wrap(err, "setup m2m-server error")
+	}
+	return nil
 }

@@ -5,11 +5,10 @@ import (
 	"encoding/binary"
 
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 	"github.com/pkg/errors"
-
-	"github.com/brocaar/loraserver/api/gw"
-	"github.com/brocaar/loraserver/internal/backend/gateway"
-	"github.com/brocaar/loraserver/internal/storage"
 )
 
 var (
@@ -17,6 +16,7 @@ var (
 )
 
 var handleDownlinkTXAckTasks = []func(*ackContext) error{
+	// smbPacketPayment,
 	abortOnNoError,
 	getToken,
 	getDownlinkFrame,
@@ -50,6 +50,19 @@ func HandleDownlinkTXAck(ctx context.Context, downlinkTXAck gw.DownlinkTXAck) er
 
 	return nil
 }
+
+// to be done: next phase
+// func smbPacketPayment(ctx *ackContext) error {
+// 	if ctx.DownlinkTXAck.Error != "" {
+// 		return nil
+// 	}
+// 	// retrieve ctx based on Token -
+// 	fmt.Println("ack.go/abortOnNoError - Downlink is sent successfully- ctx: ", ctx)
+
+// 	// Not all of the gateways support this ack
+// 	// Event after getting the ack there is no guarantee that the downlink is sent
+// 	return nil
+// }
 
 func abortOnNoError(ctx *ackContext) error {
 	if ctx.DownlinkTXAck.Error == "" {

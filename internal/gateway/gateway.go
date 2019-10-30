@@ -15,14 +15,14 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/brocaar/loraserver/api/common"
-	"github.com/brocaar/loraserver/api/gw"
-	"github.com/brocaar/loraserver/internal/backend/gateway"
-	"github.com/brocaar/loraserver/internal/gateway/stats"
-	"github.com/brocaar/loraserver/internal/helpers"
-	"github.com/brocaar/loraserver/internal/logging"
-	"github.com/brocaar/loraserver/internal/storage"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/common"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/gateway"
+	"github.com/mxc-foundation/lpwan-server/internal/gateway/stats"
+	"github.com/mxc-foundation/lpwan-server/internal/helpers"
+	"github.com/mxc-foundation/lpwan-server/internal/logging"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 )
 
 // StatsHandler represents a stat handler for incoming gateway stats.

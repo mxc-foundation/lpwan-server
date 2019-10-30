@@ -3,9 +3,9 @@ package testclient
 import (
 	"context"
 
-	"github.com/brocaar/loraserver/internal/backend/joinserver"
 	"github.com/brocaar/lorawan"
 	"github.com/brocaar/lorawan/backend"
+	"github.com/mxc-foundation/lpwan-server/internal/backend/joinserver"
 )
 
 // JoinServerPool is a join-server pool for testing.

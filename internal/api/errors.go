@@ -5,10 +5,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	"github.com/brocaar/loraserver/internal/downlink/data"
-	"github.com/brocaar/loraserver/internal/downlink/multicast"
-	"github.com/brocaar/loraserver/internal/downlink/proprietary"
-	"github.com/brocaar/loraserver/internal/storage"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink/data"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink/multicast"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink/proprietary"
+	"github.com/mxc-foundation/lpwan-server/internal/storage"
 )
 
 var errToCode = map[error]codes.Code{

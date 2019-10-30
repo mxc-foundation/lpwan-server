@@ -1,10 +1,9 @@
 package main
 
 import (
+	"github.com/mxc-foundation/lpwan-server/cmd/loraserver/cmd"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/grpclog"
-
-	"github.com/brocaar/loraserver/cmd/loraserver/cmd"
 )
 
 // grpcLogger implements a wrapper around the logrus Logger to make it

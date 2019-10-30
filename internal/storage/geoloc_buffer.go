@@ -10,8 +10,8 @@ import (
 	"github.com/gomodule/redigo/redis"
 	"github.com/pkg/errors"
 
-	"github.com/brocaar/loraserver/api/geo"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/geo"
 )
 
 const (

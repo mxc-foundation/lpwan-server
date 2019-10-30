@@ -1,4 +1,4 @@
-module github.com/brocaar/loraserver
+module github.com/mxc-foundation/lpwan-server
 
 go 1.12
 

@@ -5,11 +5,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/brocaar/loraserver/internal/config"
-	"github.com/brocaar/loraserver/internal/downlink/data"
-	"github.com/brocaar/loraserver/internal/downlink/join"
-	"github.com/brocaar/loraserver/internal/downlink/multicast"
-	"github.com/brocaar/loraserver/internal/downlink/proprietary"
+	"github.com/mxc-foundation/lpwan-server/internal/config"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink/data"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink/join"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink/multicast"
+	"github.com/mxc-foundation/lpwan-server/internal/downlink/proprietary"
 )
 
 var (

@@ -1,9 +1,9 @@
-# LoRa Server
+# LPWAN Server
 
 [![CircleCI](https://circleci.com/gh/brocaar/loraserver.svg?style=svg)](https://circleci.com/gh/brocaar/loraserver)
 
-LoRa Server is an open-source LoRaWAN network-server, part of the
-[LoRa Server](https://docs.loraserver.io/) project. It is responsible for
+LPWAN Server is an open-source LoRaWAN network-server, part of the
+[LPWAN Server](https://docs.loraserver.io/) project. It is responsible for
 handling (and de-duplication) of uplink data received by the gateway(s)
 and the scheduling of downlink data transmissions.
 
@@ -13,10 +13,10 @@ and the scheduling of downlink data transmissions.
 
 ### Component links
 
-* [LoRa Gateway Bridge](https://docs.loraserver.io/lora-gateway-bridge)
-* [LoRa Gateway Config](https://docs.loraserver.io/lora-gateway-config)
-* [LoRa Server](https://docs.loraserver.io/loraserver/)
-* [LoRa App Server](https://docs.loraserver.io/lora-app-server/)
+* [LPWAN Gateway Bridge](https://docs.loraserver.io/lora-gateway-bridge)
+* [LPWAN Gateway Config](https://docs.loraserver.io/lora-gateway-config)
+* [LPWAN Server](https://docs.loraserver.io/loraserver/)
+* [LPWAN App Server](https://docs.loraserver.io/lora-app-server/)
 
 ## Links
 
@@ -28,9 +28,9 @@ and the scheduling of downlink data transmissions.
 * [Contributing](https://docs.loraserver.io/loraserver/community/contribute/)
 * Support
   * [Support forum](https://forum.loraserver.io)
-  * [Bug or feature requests](https://github.com/brocaar/loraserver/issues)
+  * [Bug or feature requests](https://github.com/mxc-foundation/lpwan-server/issues)
 
 ## License
 
-LoRa Server is distributed under the MIT license. See also
-[LICENSE](https://github.com/brocaar/loraserver/blob/master/LICENSE).
+LPWAN Server is distributed under the MIT license. See also
+[LICENSE](https://github.com/mxc-foundation/lpwan-server/blob/master/LICENSE).

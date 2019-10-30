@@ -4,10 +4,9 @@ import (
 	"os"
 	"text/template"
 
+	"github.com/mxc-foundation/lpwan-server/internal/config"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-
-	"github.com/brocaar/loraserver/internal/config"
 )
 
 // when updating this template, don't forget to update config.md!
@@ -53,7 +52,7 @@ dsn="{{ .PostgreSQL.DSN }}"
 # Automatically apply database migrations.
 #
 # It is possible to apply the database-migrations by hand
-# (see https://github.com/brocaar/loraserver/tree/master/migrations)
+# (see https://github.com/mxc-foundation/lpwan-server/tree/master/migrations)
 # or let LoRa App Server migrate to the latest state automatically, by using
 # this setting. Make sure that you always make a backup when upgrading Lora
 # App Server and / or applying migrations.
@@ -85,6 +84,12 @@ idle_timeout="{{ .Redis.IdleTimeout }}"
 # When zero, there is no limit on the number of connections in the pool.
 max_active={{ .Redis.MaxActive }}
 
+
+[m2m_server]
+m2m_server={{ .M2MServer.M2MServer }}
+ca_cert={{ .M2MServer.CACert }}
+tls_cert={{ .M2MServer.TLSCert }}
+tls_key={{ .M2MServer.TLSKey }}
 
 # Network-server settings.
 [network_server]

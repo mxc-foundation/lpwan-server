@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/brocaar/loraserver/api/gw"
 	"github.com/brocaar/lorawan"
+	"github.com/mxc-foundation/lpwan-server/api/gw"
 )
 
 // maxSNRForSort defines the maximum SNR on which to sort. When both values
